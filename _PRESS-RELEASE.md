@@ -17,30 +17,30 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-Campfire
+  Campfire
 
 ## Sub-Heading ##
-A collaborative storytelling app
+  A collaborative storytelling app
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
 
   Campfire is a place where users can collaborate in making an original story. Every addition has the potential to point the story in a new direction, making it the perfect place for inspiring creatives to practice their improvisation skills.
+
 ## Problem ##
   Many people are looking for a way to creatively express themselves.
 
 ## Solution ##
-  > Campfire connects people around the world by giving them an outlet to participate in collaborite creative writing.
+  Campfire connects people around the world by giving them an outlet to participate in collaborite creative writing.
 
 ## Quote from You ##
-Campfire is a site which allows users to work together to make short stories.
+  Campfire is a site which allows users to work together to make short stories.
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  Describe how easy it is to get started.
   As a new user, simply go to our site and click on a title that interests you to see that story. After completing a quick signup, you can add to that story or create an entirely new story.
 
 ## Customer Quote ##
-"After a whiskey or six I love to get on campfire and tell stories with people I've never met"- Ernest Hemingway
+  "After a whiskey or six I love to get on campfire and tell stories with people I've never met"- Ernest Hemingway
 
 ## Closing and Call to Action ##
   If you are a fan of improvisation or creative writing, then campfire is the perfect site for you.

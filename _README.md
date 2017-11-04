@@ -1,12 +1,12 @@
-# Project Name
+# Campfire
 
-> Pithy project description
+  Campfire is a place where users can collaborate in making an original story. Every addition has the potential to point the story in a new direction, making it the perfect place for inspiring creatives to practice their improvisation skills.
 
-## Team
+## Team Constant-Time
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: Caleb Kress
+  - __Scrum Master__: Ben Collins
+  - __Development Team Members__: Caleb Kress, Josh Pawlik, Ben Collins
 
 ## Table of Contents
 
