@@ -1,5 +1,5 @@
 import React from 'react';
-import Story from '.storylist.jsx'
+//import Story from '.Story.jsx'
 
 const StoryList = (props) => (
   <div>

@@ -2,7 +2,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      story: window.messageList,
+      story: [{title: '1st Title', ID: 'ID1'}]
       message: window.messageList[0]
     };
   }
