@@ -7,3 +7,4 @@ var Message = (props) => (
 export default message;
 
 window.Message = Message;
+//comment to fix stuff
