@@ -6,7 +6,7 @@ use campfire
 
 CREATE TABLE messages (
   messageID int NOT NULL AUTO_INCREMENT,
-  message TEXT(),
+  message TEXT(255),
   PRIMARY KEY (ID),
   FOREIGN KEY (storyID) REFERENCES stories(storyID),
   FOREIGN KEY (userID) REFERENCES users(userID)
