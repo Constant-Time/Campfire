@@ -17,11 +17,8 @@ User.addUser = (data) => {
 //db and choose table
 // then start query
 //
-User.selectAllUsers = (data) => {
-    db('users').select('*')
-  .then(data => {
-    return data;
-  })
+User.selectAll = (data) => {
+  return db('users').select('*')
 }
 
 module.exports = User;

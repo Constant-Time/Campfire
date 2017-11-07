@@ -16,7 +16,7 @@ exports.up = function(knex, Promise) {
 
        knex.schema.createTable('messages', function(table){
            table.increments('id').primary();
-           table.string('message');
+           table.string('message', 255);
            table.integer('user_ID').references('user_ID');
            table.integer('story_ID').references('story_ID');
        })
