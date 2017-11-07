@@ -9,7 +9,7 @@ var User = require('../db/user.js');
 var Messages = require('../db/messages.js');
 
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/../src/dist'));
+app.use(express.static(__dirname + '/../react-client/dist'));
 
 //insert user
 app.post('/campfire/users', (req, res) => {
