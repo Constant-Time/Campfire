@@ -9,7 +9,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       stories: [{'Title': '1st Title', 'ID': '1st ID'}, {Title: '2nd Title', ID: '2nd ID'}],
-      currStory: [{'ID': 1, 'message': 'Hello'},  {'ID': 2, 'message': 'Good-Bye'}]
+      currStory: [{'ID': 1, 'message': 'This is a sample message. I hope that it is long enough to force my flexbox to perform. Maybe it will do the job.'},  {'ID': 2, 'message': 'If not, perhaps this one will. I am counting on one of the two to solve the issue, or at least to highlight how I can solve it.'}]
     }
   }
   handleSubmitClick (text) {
@@ -17,8 +17,8 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div>
-        <div className="Sidebar">
+      <div className="container">
+        <div className="sidebar">
           <div>
             <button>Start New Story</button>
           </div>
@@ -26,7 +26,7 @@ class App extends React.Component {
             <StoryList stories={this.state.stories} />
           </div>
         </div>
-        <div className='MessageBox'>
+        <div className='messageBox'>
           <div>
             <h2>Messages</h2>
             <MessageList messages={this.state.currStory} />
@@ -34,7 +34,7 @@ class App extends React.Component {
           <div>
             <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
               <input id='NewStoryText' type='text' maxLength="250" placeholder="Add to the story"></input>
-              <button onClick={() => console.log('clicked')}>Submit</button>
+              <button onClick={() => console.log('clicked')}>Submit!</button>
             </form>
           </div>
         </div>
