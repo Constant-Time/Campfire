@@ -12,7 +12,9 @@ class App extends React.Component {
       currStory: [{'ID': 1, 'message': 'Hello'},  {'ID': 2, 'message': 'Good-Bye'}]
     }
   }
-
+  handleSubmitClick (text) {
+    console.log(text);
+  }
   render() {
     return (
       <div>
@@ -30,7 +32,10 @@ class App extends React.Component {
             <MessageList messages={this.state.currStory} />
           </div>
           <div>
-            <input type='text' maxLength="250" placeholder="Add to the story"></input>
+            <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
+              <input id='NewStoryText' type='text' maxLength="250" placeholder="Add to the story"></input>
+              <button onClick={() => console.log('clicked')}>Submit</button>
+            </form>
           </div>
         </div>
       </div>
