@@ -9,7 +9,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       stories: [{'Title': '1st Title', 'ID': '1st ID'}, {Title: '2nd Title', ID: '2nd ID'}],
-      currStory: [{'ID': 1, 'message': 'Hello'},  {'ID': 2, 'message': 'Good-Bye'}]
+      currStory: [{'ID': 1, 'message': 'This is a sample message. I hope that it is long enough to force my flexbox to perform. Maybe it will do the job.'},  {'ID': 2, 'message': 'If not, perhaps this one will. I am counting on one of the two to solve the issue, or at least to highlight how I can solve it.'}]
     }
   }
   handleSubmitClick (text) {
