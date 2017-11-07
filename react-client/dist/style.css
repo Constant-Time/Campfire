@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+
+
+.sidebar {
+  flex: 1;
+  align-items: flex-start;
+}
+
+.messageBox {
+  flex: 1;
+  justify-content: center;
+}

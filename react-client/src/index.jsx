@@ -17,8 +17,8 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div>
-        <div className="Sidebar">
+      <div className="container">
+        <div className="sidebar">
           <div>
             <button>Start New Story</button>
           </div>
@@ -26,7 +26,7 @@ class App extends React.Component {
             <StoryList stories={this.state.stories} />
           </div>
         </div>
-        <div className='MessageBox'>
+        <div className='messageBox'>
           <div>
             <h2>Messages</h2>
             <MessageList messages={this.state.currStory} />
@@ -34,7 +34,7 @@ class App extends React.Component {
           <div>
             <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
               <input id='NewStoryText' type='text' maxLength="250" placeholder="Add to the story"></input>
-              <button onClick={() => console.log('clicked')}>Submit</button>
+              <button onClick={() => console.log('clicked')}>Submit!</button>
             </form>
           </div>
         </div>
