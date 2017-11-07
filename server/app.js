@@ -11,25 +11,22 @@ var Messages = require('../db/messages.js');
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/../src/dist'));
 
+//insert user
 app.post('/campfire/users', (req, res) => {
 	User.addUser(req.body);
   res.end();
 });
-
+//select all users
 app.get('/campfire/users', (req, res) => {
 	// db('users').select('*').then(data => res.send(data));
 	User.selectAll().then((data) => {res.send(data)})
 });
-
+//insert message
 app.post('/campfire/messages', (req, res) => {
 	Messages.addMessage(req.body);
   res.end();
 });
-
-
-// var config      = require('./knexfile.js');
-// var knex        = require('knex')(config);
-
+//get all messages
 app.get('/campfire/messages', (req, res) => {
 		Messages.selectAll().then((data) => {res.send(data)})
 		});
