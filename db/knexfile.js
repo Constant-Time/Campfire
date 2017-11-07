@@ -3,7 +3,7 @@ module.exports = {
   connection: {
     database: 'campfire',
     host: 'localhost',
-    user: 'root',
-    password: ''
+    user: 'student',
+    password: 'student'
   }
 }
