@@ -29,6 +29,12 @@ app.get('/', function(req, res){
 
 });
 
+app.post('/campfire/messages', function(req, res){
+	console.log('post recieved');
+	console.log(req.body);
+	res.end();
+})
+
 app.listen(8000, function(){
 	console.log('listening on port 8000')
 });
