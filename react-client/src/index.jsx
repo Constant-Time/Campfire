@@ -13,7 +13,7 @@ class App extends React.Component {
     }
   }
   handleSubmitClick (text) {
-    console.log(text);
+    console.log(text)
   }
   render() {
     return (
