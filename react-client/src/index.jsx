@@ -13,7 +13,19 @@ class App extends React.Component {
     }
   }
   handleSubmitClick (text) {
-    console.log(text)
+    console.log(text);
+    var mes = {mes: text}
+    $.ajax({
+      url: "http://127.0.0.1:8000/campfire/messages",
+      data: mes,
+      type: 'post',
+      success: function(data){
+        console.log(data);
+      },
+      error: function(xhr, status, err){
+        console.log(err);
+      }
+    })
   }
   render() {
     return (
@@ -32,6 +44,10 @@ class App extends React.Component {
             <MessageList messages={this.state.currStory} />
           </div>
           <div>
+            <form action = "http://127.0.0.1:8000/campfire" id='send' method='post'>
+              <input type='text' maxLength='250' placeholder='Add to the story'/>
+              <input type ='submit' name='Submit'/>
+            </form>
             <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
               <input id='NewStoryText' type='text' maxLength="250" placeholder="Add to the story"></input>
               <button onClick={() => console.log('clicked')}>Submit!</button>
