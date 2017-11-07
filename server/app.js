@@ -9,7 +9,7 @@ var User = require('../db/user.js');
 var Messages = require('../db/messages.js');
 
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/../src/dist'));
+app.use(express.static(__dirname + '/../react-client/dist/'));
 
 app.post('/campfire/users', (req, res) => {
 	User.addUser(req.body);
@@ -26,10 +26,6 @@ app.post('/campfire/messages', (req, res) => {
   res.end();
 });
 
-
-// var config      = require('./knexfile.js');
-// var knex        = require('knex')(config);
-
 app.get('/campfire/messages', (req, res) => {
 		Messages.selectAll().then((data) => {res.send(data)})
 		});
@@ -39,14 +35,6 @@ app.listen(8000, function(){
 });
 
 
-//was merge conflict
-// var bodyParser = require ('body-parser');
-// app.use(express.static(__dirname + '/../react-client/dist'));
-//
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded());
-/*
-app.get('/', (req, res){
-	res.end();
-})
-*/
+app.get('/', (req, res) => {
+	res.end('hello');
+});
