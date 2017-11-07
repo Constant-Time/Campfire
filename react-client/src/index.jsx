@@ -45,7 +45,7 @@ class App extends React.Component {
           </div>
           <div>
             <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
-              <input id='NewStoryText' type='text' maxLength="250" placeholder="Add to the story"></input>
+              <input className="inputField" id='NewStoryText' type='text' maxLength="250" placeholder="Add to the story"></input>
               <button onClick={() => console.log('clicked')}>Submit!</button>
             </form>
           </div>

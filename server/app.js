@@ -9,7 +9,12 @@ var User = require('../db/user.js');
 var Messages = require('../db/messages.js');
 
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/../react-client/dist/'));
+app.use(express.static(__dirname + '/../react-client/dist'));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 //insert user
 app.post('/campfire/users', (req, res) => {
