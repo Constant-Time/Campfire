@@ -24,6 +24,9 @@ h2 {
   flex-shrink: 1;
   text-align: center;
   border: 1px solid;
+  height: 550px;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .messageBox {
@@ -31,6 +34,9 @@ h2 {
   margin-left: 10px;
   border: 1px solid;
   padding: 5px;
+  height: 540px;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .message-list {
