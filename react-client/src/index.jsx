@@ -74,12 +74,14 @@ class App extends React.Component {
 
   startNewStory() {
     console.log('starting new story');
-    this.setState({Title: null})
+    this.setState({Title: null});
+    this.setState({currStory: []});
   }
 
 
   render() {
-    var title = this.state.Title ? <h2>{this.state.Title}</h2> : <form>
+    var title = this.state.Title ? <h2>{this.state.Title}</h2> : <form className='newStoryForm'>
+      <h3>Add a title and the first part of the story, then hit submit</h3>
       <input placeholder='Add Title Here'></input>
     </form>
     return (
