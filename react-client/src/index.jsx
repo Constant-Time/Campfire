@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import StoryList from './components/story-page/StoryList.jsx';
 import MessageList from './components/story-page/messageList.jsx';
+import InputField from './components/story-page/inputField.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class App extends React.Component {
           </div>
           <div>
             <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
-              <input className="inputField" id='NewStoryText' type='text' maxLength="250" placeholder="Add to the story"></input>
+              <InputField />
               <button onClick={() => console.log('clicked')}>Submit!</button>
             </form>
           </div>
