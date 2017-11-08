@@ -5,12 +5,20 @@ html {
 h1 {
   text-align: center;
   font-size: 75px;
+  margin: 0px;
 }
 
 h2 {
   font-size: 30px;
   text-decoration: underline;
   text-align: center;
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
 }
 
 .container {
