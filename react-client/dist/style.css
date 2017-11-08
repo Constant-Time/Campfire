@@ -5,12 +5,20 @@ html {
 h1 {
   text-align: center;
   font-size: 75px;
+  margin: 0px;
 }
 
 h2 {
   font-size: 30px;
   text-decoration: underline;
   text-align: center;
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
 }
 
 .container {
@@ -24,6 +32,9 @@ h2 {
   flex-shrink: 1;
   text-align: center;
   border: 1px solid;
+  height: 550px;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .messageBox {
@@ -31,6 +42,9 @@ h2 {
   margin-left: 10px;
   border: 1px solid;
   padding: 5px;
+  height: 540px;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
 .message-list {
