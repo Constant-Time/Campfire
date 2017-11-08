@@ -29,7 +29,7 @@ app.get('/campfire/users', (req, res) => {
 });
 //insert message
 app.post('/campfire/messages', (req, res) => {
-  console.log('req.body.message', req.body.message);
+  console.log('req.body', req.body);
 	Messages.addMessage(req.body);
   res.send(req.body.message);
   // res.end();
