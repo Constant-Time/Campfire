@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import StoryList from './components/story-page/StoryList.jsx';
 import MessageList from './components/story-page/messageList.jsx';
+import InputField from './components/story-page/inputField.jsx';
 import Axios from 'axios';
 
 class App extends React.Component {
@@ -10,7 +11,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       stories: [{'Title': '1st Title', 'ID': '1st ID'}, {Title: '2nd Title', ID: '2nd ID'}],
-      currStory: [{'ID': 1, 'message': 'This is a sample message. I hope that it is long enough to force my flexbox to perform. Maybe it will do the job.'},  {'ID': 2, 'message': 'If not, perhaps this one will. I am counting on one of the two to solve the issue, or at least to highlight how I can solve it.'}]
+      currStory: [{'username': 'joshawesome', 'message': 'This is a sample message. I hope that it is long enough to force my flexbox to perform. Maybe it will do the job.'},  {'username': 'ghostcoder', 'message': 'If not, perhaps this one will. I am counting on one of the two to solve the issue, or at least to highlight how I can solve it.'}, {'username': 'calebkress', 'message': 'Now I\'m trying to set the scrollbar, so I need to write a sample message long enough to make the scroll work. I\'m not sure how long this needs to be to make that happen, so I\'m just typing random nonsense until I hit that point.'}]
     }
   }
 
@@ -54,12 +55,12 @@ class App extends React.Component {
         </div>
         <div className='messageBox'>
           <div>
-            <h2>Messages</h2>
+            <h2>The Legend of Trying to Make this App Work</h2>
             <MessageList messages={this.state.currStory} />
           </div>
           <div>
             <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
-              <input id='NewStoryText' type='text' maxLength="250" placeholder="Add to the story"></input>
+              <InputField />
               <button onClick={() => console.log('clicked')}>Submit!</button>
             </form>
           </div>
