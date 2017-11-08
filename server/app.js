@@ -19,6 +19,7 @@ app.use(function(req, res, next) {
 //
 //insert user
 app.post('/campfire/users', (req, res) => {
+  console.log('req.body', req.body);
 	User.addUser(req.body);
   res.end();
 });
@@ -34,9 +35,11 @@ app.post('/campfire/messages', (req, res) => {
   res.send(req.body.message);
   // res.end();
 });
-
+//select messages
 app.get('/campfire/messages', (req, res) => {
-		Messages.selectAll().then((data) => {res.send(data)})
+  var param = req.query.story_ID
+  console.log(param);
+	Messages.selectAll({story_ID:param}).then((data) => {res.send(data)})
 		});
 
 app.listen(8000, function(){
