@@ -5,7 +5,7 @@ var Messages = {};
 Messages.addMessage = (data) => {
   db('messages')
   .insert({
-    message: data.message,
+    message: data.mes,
   })
   .catch(err => {
     console.error(err);
