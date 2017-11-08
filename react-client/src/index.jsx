@@ -5,11 +5,13 @@ import StoryList from './components/story-page/StoryList.jsx';
 import MessageList from './components/story-page/messageList.jsx';
 import InputField from './components/story-page/inputField.jsx';
 import Axios from 'axios';
+import Modal from './components/story-page/Modal.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isOpen: false,
       Title:'<--- Welcome To Campfire, select a story to get started',
       story_ID:1,
       user_ID:1,
@@ -72,10 +74,15 @@ class App extends React.Component {
     console.log(story_ID);
   }
 
+  toggleModal () {
+    this.setState({isOpen: !this.state.isOpen});
+  }
+
   startNewStory() {
     console.log('starting new story');
-    this.setState({Title: null});
-    this.setState({currStory: []});
+    //this.setState({Title: null});
+    //this.setState({currStory: []});
+    this.toggleModal()
   }
 
 
@@ -94,6 +101,8 @@ class App extends React.Component {
             <StoryList handleTitleClick={this.handleTitleClick.bind(this)} stories={this.state.stories} />
           </div>
         </div>
+        <Modal show={this.state.isOpen}
+          onClose={this.toggleModal.bind(this)} />
         <div className='messageBox'>
           <div>
             {title}
