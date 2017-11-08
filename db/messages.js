@@ -3,9 +3,10 @@ var db = require('./db.js');
 var Messages = {};
 
 Messages.addMessage = (data) => {
+  console.log('data in messages.js', data);
   db('messages')
   .insert({
-    message: data.mes,
+    message: data.message,
   })
   .catch(err => {
     console.error(err);
