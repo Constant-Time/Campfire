@@ -20,7 +20,7 @@ Messages.addMessage = (data) => {
 // then start query
 
 Messages.selectAll = (data) => {
-  return db('messages').select('*')
+  return db('messages').where({story_ID:data.story_ID}).select('*')
 }
 
 module.exports = Messages;
