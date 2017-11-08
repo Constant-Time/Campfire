@@ -10,7 +10,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Title:'A Title',
+      Title:'<--- Welcome To Campfire, select a story to get started',
       story_ID:1,
       user_ID:1,
       stories: [{Title: '1st Title', story_ID: 1}, {Title: '2nd Title', story_ID: 2}],
@@ -72,13 +72,21 @@ class App extends React.Component {
     console.log(story_ID);
   }
 
+  startNewStory() {
+    console.log('starting new story');
+    this.setState({Title: null})
+  }
+
 
   render() {
+    var title = this.state.Title ? <h2>{this.state.Title}</h2> : <form>
+      <input placeholder='Add Title Here'></input>
+    </form>
     return (
       <div className="container">
         <div className="sidebar">
           <div>
-            <button>Start New Story</button>
+            <button onClick={() => this.startNewStory.call(this)}>Start New Story</button>
           </div>
           <div>
             <StoryList handleTitleClick={this.handleTitleClick.bind(this)} stories={this.state.stories} />
@@ -86,7 +94,7 @@ class App extends React.Component {
         </div>
         <div className='messageBox'>
           <div>
-            <h2>{this.state.Title}</h2>
+            {title}
             <MessageList messages={this.state.currStory} />
           </div>
           <div>
