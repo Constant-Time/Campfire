@@ -10,6 +10,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      Title:'A Title',
       story_ID:1,
       user_ID:1,
       stories: [{Title: '1st Title', story_ID: 1}, {Title: '2nd Title', story_ID: 2}],
@@ -55,14 +56,15 @@ class App extends React.Component {
     });
   }
 
-  handleTitleClick(story_ID) {
+  handleTitleClick(story_ID, Title) {
     this.setState({story_ID:story_ID});
     //update currStory;
     Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:story_ID}
   })
     .then(({data}) =>{
-      console.log('data inside of get', data);
+      console.log('data inside of handleTitleClick', data);
       this.setState({currStory:data})
+      this.setState({Title:Title})
     })
   .catch((err) => {
     console.log(err);
@@ -84,7 +86,7 @@ class App extends React.Component {
         </div>
         <div className='messageBox'>
           <div>
-            <h2>The Legend of Trying to Make this App Work</h2>
+            <h2>{this.state.Title}</h2>
             <MessageList messages={this.state.currStory} />
           </div>
           <div>
