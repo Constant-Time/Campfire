@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 // Models
 var User = require('../db/user.js');
 var Messages = require('../db/messages.js');
+var Stories = require('../db/stories.js');
 
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
@@ -41,6 +42,18 @@ app.get('/campfire/messages', (req, res) => {
   console.log(param);
 	Messages.selectAll({story_ID:param}).then((data) => {res.send(data)})
 		});
+
+//get all titles
+app.get('/campfire/stories', (req, res) => {
+  Stories.selectAll().then((data) => {res.send(data)})
+  //res.send('hello');
+})
+
+app.post('/campfire/stories', (req, res) => {
+  console.log(req.body, 'req.body');
+  Stories.addStory(req.body);
+  res.end();
+})
 
 app.listen(8000, function(){
 	console.log('listening on port 8000')
