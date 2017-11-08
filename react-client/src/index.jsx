@@ -16,6 +16,11 @@ class App extends React.Component {
   }
 
   handleSubmitClick (text) {
+    console.log(text);
+    if (text.length === 0 ){
+      alert('Cannot submit an empty field');
+      return;
+    }
     Axios.post('http://127.0.0.1:8000/campfire/messages',{message:text})
     .then(({data}) => {
       console.log('data', data);
