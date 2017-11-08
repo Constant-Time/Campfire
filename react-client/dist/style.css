@@ -36,3 +36,9 @@ h2 {
 .message-list {
   font-size: 20px;
 }
+
+.inputField {
+  width: 80%;
+  height: 40px;
+  margin-right: 10px;
+}

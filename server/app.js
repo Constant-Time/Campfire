@@ -33,7 +33,7 @@ app.post('/campfire/messages', (req, res) => {
 	Messages.addMessage(req.body);
   res.end();
 });
-//get all messages
+
 app.get('/campfire/messages', (req, res) => {
 		Messages.selectAll().then((data) => {res.send(data)})
 		});
@@ -43,13 +43,6 @@ app.listen(8000, function(){
 });
 
 
-//was merge conflict
-// var bodyParser = require ('body-parser');
-// app.use(express.static(__dirname + '/../react-client/dist'));
-//
-// app.use(bodyParser.json());
-/*
-app.get('/', (req, res){
-	res.end();
-})
-*/
+app.get('/', (req, res) => {
+	res.end('hello');
+});
