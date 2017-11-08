@@ -11,7 +11,7 @@ exports.up = function(knex, Promise) {
 
        knex.schema.createTable('stories', function(table){
            table.increments('story_ID').primary();
-           table.string('storyName');
+           table.string('Title');
        }),
 
        knex.schema.createTable('messages', function(table){

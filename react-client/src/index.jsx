@@ -12,10 +12,28 @@ class App extends React.Component {
     this.state = {
       story_ID:1,
       user_ID:1,
-      stories: [{'Title': '1st Title', 'ID': '1st ID'}, {Title: '2nd Title', ID: '2nd ID'}],
+      stories: [{Title: '1st Title', story_ID: 1}, {Title: '2nd Title', story_ID: 2}],
       currStory: [{'user_ID': 1, 'story_ID':1, 'message': 'This is a sample message. I hope that it is long enough to force my flexbox to perform. Maybe it will do the job.'},  {'user_ID': '2', 'story_ID':2, 'message': 'If not, perhaps this one will. I am counting on one of the two to solve the issue, or at least to highlight how I can solve it.'}, {'username': 'calebkress', 'message': 'Now I\'m trying to set the scrollbar, so I need to write a sample message long enough to make the scroll work. I\'m not sure how long this needs to be to make that happen, so I\'m just typing random nonsense until I hit that point.'}]
     }
   }
+
+  componentDidMount() {
+    this.getTitles()
+  }
+
+
+
+  getTitles() {
+    Axios.get('http://127.0.0.1:8000/campfire/stories')
+    .then((data) => {
+      console.log('data inside of getTitles', data);
+      this.setState({stories:data.data})
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
 
   handleSubmitClick (text) {
     console.log(text);
@@ -35,20 +53,24 @@ class App extends React.Component {
     .catch((err) => {
       console.log(err);
     });
-    // console.log(text);
-    // var mes = {mes: text}
-    // $.ajax({
-    //   url: "http://127.0.0.1:8000/campfire/messages",
-    //   data: mes,
-    //   type: 'post',
-    //   success: function(data){
-    //     console.log(data);
-    //   },
-    //   error: function(xhr, status, err){
-    //     console.log(err);
-    //   }
-    // })
   }
+
+  handleTitleClick(story_ID) {
+    this.setState({story_ID:story_ID});
+    //update currStory;
+    Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:story_ID}
+  })
+    .then(({data}) =>{
+      console.log('data inside of get', data);
+      this.setState({currStory:data})
+    })
+  .catch((err) => {
+    console.log(err);
+  });
+    console.log(story_ID);
+  }
+
+
   render() {
     return (
       <div className="container">
@@ -57,7 +79,7 @@ class App extends React.Component {
             <button>Start New Story</button>
           </div>
           <div>
-            <StoryList stories={this.state.stories} />
+            <StoryList handleTitleClick={this.handleTitleClick.bind(this)} stories={this.state.stories} />
           </div>
         </div>
         <div className='messageBox'>

@@ -3,8 +3,7 @@ import Story from './Story.jsx'
 
 const StoryList = (props) => (
   <div>
-    <h4>This is storyList component</h4>
-    {props.stories.map(story => <Story story={story} />)}
+    {props.stories.map(story => <Story handleTitleClick={props.handleTitleClick} story={story} />)}
   </div>
 )
 
