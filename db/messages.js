@@ -7,6 +7,8 @@ Messages.addMessage = (data) => {
   db('messages')
   .insert({
     message: data.message,
+    story_ID:data.story_ID,
+    user_ID:data.user_ID
   })
   .catch(err => {
     console.error(err);
