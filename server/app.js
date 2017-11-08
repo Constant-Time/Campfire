@@ -29,9 +29,10 @@ app.get('/campfire/users', (req, res) => {
 });
 //insert message
 app.post('/campfire/messages', (req, res) => {
-  console.log('req.body', req.body);
+  console.log('req.body.message', req.body.message);
 	Messages.addMessage(req.body);
-  res.end();
+  res.send(req.body.message);
+  // res.end();
 });
 //get all messages
 app.get('/campfire/messages', (req, res) => {
