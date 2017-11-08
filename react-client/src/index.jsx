@@ -88,7 +88,7 @@ class App extends React.Component {
             <MessageList messages={this.state.currStory} />
           </div>
           <div>
-            <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
+            <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value), document.getElementById('NewStoryText').value = ''}}>
               <InputField />
               <button onClick={() => console.log('clicked')}>Submit!</button>
             </form>
