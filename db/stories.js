@@ -7,6 +7,7 @@ Stories.addStory = (data) => {
   .insert({
     Title: data.Title,
   })
+  .select('story_ID')
   .catch(err => {
     console.error(err);
   });
@@ -18,6 +19,10 @@ Stories.addStory = (data) => {
 //
 Stories.selectAll = (data) => {
   return db('stories').select('*')
+}
+
+Stories.selectStory_ID = (data) => {
+  return db('stories').select('story_ID')
 }
 
 module.exports = Stories;

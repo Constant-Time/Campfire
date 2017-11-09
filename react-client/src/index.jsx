@@ -80,7 +80,7 @@ class App extends React.Component {
 
   handleNewSubmission(title, text) {
     console.log('clicked submit');
-    console.log(title, text, 'title and text')
+    console.log('title and text',title, text);
     if (title.length === 0 || text.length === 0) {
       alert('You must submit a title and text');
     } else {
@@ -88,7 +88,7 @@ class App extends React.Component {
       Axios.post('http://127.0.0.1:8000/campfire/stories',{Title: title})
       .then((data) => {
         console.log('added story to DB', data);
-        Axios.get('http://127.0.0.1:8000/campfire/stories')
+        Axios.get('http://127.0.0.1:8000/campfire/newStory', {params:{story:title}})
       }).then((data) => {
         console.log('data from get request', data);
       })

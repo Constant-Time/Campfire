@@ -44,11 +44,6 @@ app.get('/campfire/messages', (req, res) => {
 	Messages.selectAll({story_ID:param}).then((data) => {res.send(data)})
 		});
 
-//get all titles
-app.get('/campfire/stories', (req, res) => {
-  Stories.selectAll().then((data) => {res.send(data)})
-  //res.send('hello');
-})
 
 app.post('/campfire/stories', (req, res) => {
   console.log(req.body, 'req.body');
@@ -64,3 +59,17 @@ app.listen(8000, function(){
 app.get('/', (req, res) => {
 	res.end('hello');
 });
+
+//get all titles
+app.get('/campfire/stories', (req, res) => {
+  Stories.selectAll().then((data) => {res.send(data)})
+  //res.send('hello');
+})
+
+//get new story_ID
+app.get('/campfire/newStory', (req, res) => {
+  var param = req.query.story; //is the title
+  console.log('param in get new story_ID',param);
+	Stories.selectStory_ID({story_ID:param})
+  .then((data) => {res.send(data)})
+		});
