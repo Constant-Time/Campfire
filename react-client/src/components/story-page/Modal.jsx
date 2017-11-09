@@ -34,12 +34,15 @@ class Modal extends React.Component {
         <div className="modal" style={modalStyle}>
           <div>
             <form>
-              <input placeholder='Add Title Here'></input>
+              <input id='newTitle' placeholder='Add Title Here'></input>
               <div>
-                	<textarea placeholder='Start story here, 250 characters or less!' rows="5" cols="50"></textarea>
+                	<textarea id='textForNewStory' placeholder='Start story here, 250 characters or less!' rows="5" cols="50"></textarea>
                 </div>
-              <button>Submit</button>
-            </form>
+              <button onClick={(e) => {
+                  e.preventDefault()
+                   this.props.handleNewSubmission(document.getElementById('newTitle').value, document.getElementById('textForNewStory').value)
+                }}>Submit</button>
+           </form>
           </div>
           <div className="footer">
             <button onClick={this.props.onClose}>
@@ -51,11 +54,12 @@ class Modal extends React.Component {
     );
   }
 }
-
+/*
 Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   show: PropTypes.bool,
+  handleNewSubmission: PropTypes.func.isRequired,
 
 };
-
+*/
 export default Modal;

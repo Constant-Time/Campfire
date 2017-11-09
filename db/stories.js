@@ -20,4 +20,8 @@ Stories.selectAll = (data) => {
   return db('stories').select('*')
 }
 
+Stories.selectStory_ID = (data) => {
+  return db('stories').select('story_ID');
+}
+
 module.exports = Stories;
