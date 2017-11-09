@@ -78,3 +78,4 @@ app.get('/campfire/checkUserExists', (req, res) => {
   User.findUser(user)
   .then((data) => {res.send(data)})
 })
+
