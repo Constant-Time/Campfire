@@ -88,13 +88,12 @@ class App extends React.Component {
       Axios.post('http://127.0.0.1:8000/campfire/stories',{Title: title})
       .then((data) => {
         console.log('added story to DB', data);
-        Axios.get('http://127.0.0.1:8000/campfire/newStory', {params:{story:title}})
-      }).then((data) => {
-        console.log('data from get request', data);
+        Axios.get('http://127.0.0.1:8000/campfire/newStory', {params:{story_ID:this.state.story_ID}
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        })
+        .then((data) => {
+          console.log('data from get request', data);
+        })
     }
   }
 
