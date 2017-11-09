@@ -35,9 +35,9 @@ class Signup extends React.Component {
         <div className="modal" style={modalStyle}>
           <div className="signup">
             <form>
-              <input type="text" placeholder="username"></input>
-              <input type="text" placeholder="password"></input>
-              <button>Sign Up</button>
+              <input type="text" placeholder="username" id="username"></input>
+              <input type="text" placeholder="password" id="password"></input>
+              <button onClick={(e) => {e.preventDefault(), this.props.handleSignup(document.getElementById('username').value, document.getElementById('password').value)}}>Sign Up</button>
             </form>
             <div className="footer">
               <button onClick={this.props.onClose}>

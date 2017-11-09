@@ -26,6 +26,7 @@ app.post('/campfire/users', (req, res) => {
 });
 //select all users
 app.get('/campfire/users', (req, res) => {
+  console.log('req.body',req.body);
 	// db('users').select('*').then(data => res.send(data));
 	User.selectAll().then((data) => {res.send(data)})
 });
@@ -43,14 +44,9 @@ app.get('/campfire/messages', (req, res) => {
 	Messages.selectAll({story_ID:param}).then((data) => {res.send(data)})
 		});
 
-//get all titles
-app.get('/campfire/stories', (req, res) => {
-  Stories.selectAll().then((data) => {res.send(data)})
-  //res.send('hello');
-})
 
 app.post('/campfire/stories', (req, res) => {
-  console.log(req.body, 'req.body');
+  console.log('req.body',req.body);
   Stories.addStory(req.body);
   res.end();
 })
@@ -63,3 +59,22 @@ app.listen(8000, function(){
 app.get('/', (req, res) => {
 	res.end('hello');
 });
+
+//get all titles
+app.get('/campfire/stories', (req, res) => {
+  Stories.selectAll().then((data) => {res.send(data)})
+  //res.send('hello');
+})
+
+//get new story_ID
+app.get('/campfire/newStory', (req, res) => {
+  var param = req.query.story_ID; //is the title
+	Stories.selectStory_ID({story_ID:param})
+  .then((data) => {res.send(data)})
+		});
+
+app.get('/campfire/checkUserExists', (req, res) => {
+  var user = req.query.username;
+  User.findUser(user)
+  .then((data) => {res.send(data)})
+})
