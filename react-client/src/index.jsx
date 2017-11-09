@@ -6,12 +6,16 @@ import MessageList from './components/story-page/messageList.jsx';
 import InputField from './components/story-page/inputField.jsx';
 import Axios from 'axios';
 import Modal from './components/story-page/Modal.jsx';
+import Login from './components/story-page/login.jsx';
+import Signup from './components/story-page/signup.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
+      isNewStoryOpen: false,
+      isLoginOpen: false,
+      isSignupOpen: false,
       Title:'<--- Welcome To Campfire, select a story to get started',
       story_ID:1,
       user_ID:1,
@@ -74,8 +78,8 @@ class App extends React.Component {
     console.log(story_ID);
   }
 
-  toggleModal () {
-    this.setState({isOpen: !this.state.isOpen});
+  toggleNewStoryModal () {
+    this.setState({isNewStoryOpen: !this.state.isNewStoryOpen});
   }
 
   handleNewSubmission(title, text) {
@@ -111,11 +115,23 @@ class App extends React.Component {
   }
 
   startNewStory() {
-    console.log('starting new story');
+    this.toggleNewStoryModal()
+  }
 
-    //this.setState({Title: null});
-    //this.setState({currStory: []});
-    this.toggleModal()
+  toggleLoginModal () {
+    this.setState({isLoginOpen: !this.state.isLoginOpen});
+  }
+
+  startLogin() {
+    this.toggleLoginModal()
+  }
+
+  toggleSignupModal () {
+    this.setState({isSignupOpen: !this.state.isSignupOpen});
+  }
+
+  startSignup() {
+    this.toggleSignupModal()
   }
 
 
@@ -126,6 +142,14 @@ class App extends React.Component {
     </form>
     return (
       <div className="container">
+        <div className="login/signup">
+          <Login showLogin={this.state.isLoginOpen}
+            onClose={this.toggleLoginModal.bind(this)} />
+          <Signup showSignup={this.state.isSignupOpen}
+            onClose={this.toggleSignupModal.bind(this)} />
+          <button onClick={() => this.startLogin.call(this)}>Login</button>
+          <button onClick={() => this.startSignup.call(this)}>Signup</button>
+        </div>
         <div className="sidebar">
           <div>
             <button onClick={() => this.startNewStory.call(this)}>Start New Story</button>
@@ -134,8 +158,10 @@ class App extends React.Component {
             <StoryList handleTitleClick={this.handleTitleClick.bind(this)} stories={this.state.stories} />
           </div>
         </div>
-        <Modal show={this.state.isOpen} handleNewSubmission={this.handleNewSubmission.bind(this)}
-          onClose={this.toggleModal.bind(this)} />
+
+        <Modal show={this.state.isNewStoryOpen} handleNewSubmission={this.handleNewSubmission.bind(this)}
+          onClose={this.toggleNewStoryModal.bind(this)} />
+
         <div className='messageBox'>
           <div>
             {title}
