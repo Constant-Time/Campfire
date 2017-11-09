@@ -37,12 +37,12 @@ class Login extends React.Component{
               <input type="text" placeholder="password"></input>
               <button>Login</button>
             </form>
-          </div>
           <div className="footer">
             <button onClick={this.props.onClose}>
               Close
             </button>
           </div>
+        </div>
         </div>
       </div>
     )
