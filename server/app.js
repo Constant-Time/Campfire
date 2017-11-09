@@ -26,6 +26,7 @@ app.post('/campfire/users', (req, res) => {
 });
 //select all users
 app.get('/campfire/users', (req, res) => {
+  console.log(req.body, 'req.body');
 	// db('users').select('*').then(data => res.send(data));
 	User.selectAll().then((data) => {res.send(data)})
 });
