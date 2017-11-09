@@ -78,8 +78,29 @@ class App extends React.Component {
     this.setState({isOpen: !this.state.isOpen});
   }
 
+  handleNewSubmission(title, text) {
+    console.log('clicked submit');
+    console.log(title, text, 'title and text')
+    if (title.length === 0 || text.length === 0) {
+      alert('You must submit a title and text');
+    } else {
+      console.log('ready to make new story');
+      Axios.post('http://127.0.0.1:8000/campfire/stories',{Title: title})
+      .then((data) => {
+        console.log('added story to DB', data);
+        Axios.get('http://127.0.0.1:8000/campfire/stories')
+      }).then((data) => {
+        console.log('data from get request', data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  }
+
   startNewStory() {
     console.log('starting new story');
+
     //this.setState({Title: null});
     //this.setState({currStory: []});
     this.toggleModal()
@@ -101,7 +122,7 @@ class App extends React.Component {
             <StoryList handleTitleClick={this.handleTitleClick.bind(this)} stories={this.state.stories} />
           </div>
         </div>
-        <Modal show={this.state.isOpen}
+        <Modal show={this.state.isOpen} handleNewSubmission={this.handleNewSubmission.bind(this)}
           onClose={this.toggleModal.bind(this)} />
         <div className='messageBox'>
           <div>
