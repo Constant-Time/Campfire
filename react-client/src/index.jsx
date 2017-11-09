@@ -33,7 +33,6 @@ class App extends React.Component {
   getTitles() {
     Axios.get('http://127.0.0.1:8000/campfire/stories')
     .then((data) => {
-      console.log('data inside of getTitles', data);
       this.setState({stories:data.data})
     })
     .catch((err) => {
@@ -43,7 +42,6 @@ class App extends React.Component {
 
 
   handleSubmitClick (text) {
-    console.log(text);
     if (text.length === 0 ){
       alert('Cannot submit an empty field');
       return;
@@ -53,7 +51,6 @@ class App extends React.Component {
       // console.log('data in axios post', data.config.data);
       Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:this.state.story_ID}})
       .then(({data}) =>{
-        console.log('data inside of get', data);
         this.setState({currStory:data});
       })
     })
@@ -68,7 +65,6 @@ class App extends React.Component {
     Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:story_ID}
   })
     .then(({data}) =>{
-      console.log('data inside of handleTitleClick', data);
       this.setState({currStory:data})
       this.setState({Title:Title})
     })
@@ -91,22 +87,19 @@ class App extends React.Component {
       .then((data) => {
         Axios.get('http://127.0.0.1:8000/campfire/newStory',{params:{story_ID:this.state.story_ID}})
         .then(({data}) =>{
-          console.log(data, 'asdigjaioer')
           var newStory_ID = data[data.length -1].story_ID;
-          console.log(newStory_ID, '$$$$$$$$$$$$$$$$4')
           this.setState({story_ID:newStory_ID});
           //adding comment to database
           Axios.post('http://127.0.0.1:8000/campfire/messages', {message:text,story_ID:newStory_ID,user_ID:this.state.user_ID})
           .then((data) => {
-            console.log('data', data);
             Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:newStory_ID}})
             .then(({data}) =>{
-              console.log('data inside of get', data);
               this.setState({currStory:data});
             })
             .then((data) => {
               this.getTitles();
               this.setState({Title:title})
+              this.setState({isNewStoryOpen:false})
             })
           })
         })
