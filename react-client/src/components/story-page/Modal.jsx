@@ -32,7 +32,15 @@ class Modal extends React.Component {
     return (
       <div className="backdrop" style={backdropStyle}>
         <div className="modal" style={modalStyle}>
-
+          <div>
+            <form>
+              <input placeholder='Add Title Here'></input>
+              <div>
+                	<textarea placeholder='Start story here, 250 characters or less!' rows="5" cols="50"></textarea>
+                </div>
+              <button>Submit</button>
+            </form>
+          </div>
           <div className="footer">
             <button onClick={this.props.onClose}>
               Close
