@@ -71,3 +71,15 @@ img {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.loginSignup {
+  text-align: center;
+}
+
+.loginBtn {
+  font-size: 20px;
+}
+
+.signupBtn {
+  font-size: 20px;
+}

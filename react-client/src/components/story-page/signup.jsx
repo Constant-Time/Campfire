@@ -39,11 +39,11 @@ class Signup extends React.Component {
               <input type="text" placeholder="password"></input>
               <button>Sign Up</button>
             </form>
-          </div>
-          <div className="footer">
-            <button onClick={this.props.onClose}>
+            <div className="footer">
+              <button onClick={this.props.onClose}>
               Close
-            </button>
+              </button>
+            </div>
           </div>
         </div>
       </div>

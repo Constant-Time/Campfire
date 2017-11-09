@@ -109,15 +109,16 @@ class App extends React.Component {
       <input placeholder='Add Title Here'></input>
     </form>
     return (
-      <div className="container">
-        <div className="login/signup">
-          <Login showLogin={this.state.isLoginOpen}
-            onClose={this.toggleLoginModal.bind(this)} />
+      <div>
+      <div className="loginSignup">
+        <Login showLogin={this.state.isLoginOpen}
+          onClose={this.toggleLoginModal.bind(this)} />
           <Signup showSignup={this.state.isSignupOpen}
             onClose={this.toggleSignupModal.bind(this)} />
-          <button onClick={() => this.startLogin.call(this)}>Login</button>
-          <button onClick={() => this.startSignup.call(this)}>Signup</button>
-        </div>
+            <button className="loginBtn" onClick={() => this.startLogin.call(this)}>Login</button>
+            <button className="signupBtn" onClick={() => this.startSignup.call(this)}>Signup</button>
+          </div>
+      <div className="container">
         <div className="sidebar">
           <div>
             <button onClick={() => this.startNewStory.call(this)}>Start New Story</button>
@@ -141,6 +142,7 @@ class App extends React.Component {
           </div>
         </div>
       </div>
+    </div>
     )
   }
 }
