@@ -33,9 +33,9 @@ class Login extends React.Component{
         <div className="modal" style={modalStyle}>
           <div className="login">
             <form>
-              <input type="text" placeholder="username"></input>
-              <input type="text" placeholder="password"></input>
-              <button>Login</button>
+              <input type="text" placeholder="username" id="username"></input>
+              <input type="text" placeholder="password" id="password"></input>
+              <button onClick={(e) => {e.preventDefault(), this.props.handleLogin(document.getElementById('username').value, document.getElementById('password').value)}}>Login</button>
             </form>
           <div className="footer">
             <button onClick={this.props.onClose}>

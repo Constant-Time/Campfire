@@ -21,4 +21,8 @@ User.selectAll = (data) => {
   return db('users').select('*')
 }
 
+User.findUser = (data) => {
+  return db('users').where({username:data}).select('*')
+}
+
 module.exports = User;

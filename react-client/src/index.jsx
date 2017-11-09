@@ -13,6 +13,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: '',
+      isLoggedIn: false,
       isNewStoryOpen: false,
       isLoginOpen: false,
       isSignupOpen: false,
@@ -78,6 +80,39 @@ class App extends React.Component {
     this.setState({isNewStoryOpen: !this.state.isNewStoryOpen});
   }
 
+  handleSignup(username, password) {
+    Axios.get('http://127.0.0.1:8000/campfire/checkUserExists', {params:{username: username}
+  })
+    .then(({data}) => {
+      if(data.length !== 0){
+        alert('Username is already taken')
+      } else {
+        Axios.post('http://127.0.0.1:8000/campfire/users', {username:username, password:password})
+          .then(({data}) => {
+            this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
+          })
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  handleLogin(username, password) {
+    Axios.get('http://127.0.0.1:8000/campfire/checkUserExists', {params:{username: username}
+  })
+    .then(({data}) => {
+      if(data.length === 0){
+        alert('Username doesn\'t exist');
+      } else if(password !== data[0].password){
+        alert('Incorrect password');
+      } else {
+        this.setState({isLoggedIn: true, username: username, isLoginOpen: false})
+      }
+    })
+  }
+
+
   handleNewSubmission(title, text) {
     if (title.length === 0 || text.length === 0) {
       alert('You must submit a title and text');
@@ -87,11 +122,13 @@ class App extends React.Component {
       .then((data) => {
         Axios.get('http://127.0.0.1:8000/campfire/newStory',{params:{story_ID:this.state.story_ID}})
         .then(({data}) =>{
+
           var newStory_ID = data[data.length -1].story_ID;
           this.setState({story_ID:newStory_ID});
           //adding comment to database
           Axios.post('http://127.0.0.1:8000/campfire/messages', {message:text,story_ID:newStory_ID,user_ID:this.state.user_ID})
           .then((data) => {
+
             Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:newStory_ID}})
             .then(({data}) =>{
               this.setState({currStory:data});
@@ -136,9 +173,9 @@ class App extends React.Component {
     return (
       <div>
       <div className="loginSignup">
-        <Login showLogin={this.state.isLoginOpen}
+        <Login showLogin={this.state.isLoginOpen} handleLogin={this.handleLogin.bind(this)}
           onClose={this.toggleLoginModal.bind(this)} />
-          <Signup showSignup={this.state.isSignupOpen}
+          <Signup showSignup={this.state.isSignupOpen} handleSignup={this.handleSignup.bind(this)}
             onClose={this.toggleSignupModal.bind(this)} />
             <button className="loginBtn" onClick={() => this.startLogin.call(this)}>Login</button>
             <button className="signupBtn" onClick={() => this.startSignup.call(this)}>Signup</button>

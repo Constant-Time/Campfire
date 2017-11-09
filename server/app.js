@@ -69,7 +69,13 @@ app.get('/campfire/stories', (req, res) => {
 //get new story_ID
 app.get('/campfire/newStory', (req, res) => {
   var param = req.query.story_ID; //is the title
-  console.log('param in get new story_ID',param);
 	Stories.selectStory_ID({story_ID:param})
   .then((data) => {res.send(data)})
 		});
+
+app.get('/campfire/checkUserExists', (req, res) => {
+  var user = req.query.username;
+  User.findUser(user)
+  .then((data) => {res.send(data)})
+})
+
