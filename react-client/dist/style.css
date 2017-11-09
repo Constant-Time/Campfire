@@ -1,5 +1,6 @@
 html {
   font-family: sans-serif;
+  /*background-color: #F2E9AC;*/
 }
 
 h1 {
@@ -64,4 +65,9 @@ img {
 
 .newStoryForm {
   text-align: center;
+}
+
+.storyName {
+  text-decoration: underline;
+  cursor: pointer;
 }
