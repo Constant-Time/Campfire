@@ -50,7 +50,7 @@ class App extends React.Component {
       Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:this.state.story_ID}})
       .then(({data}) =>{
         console.log('data inside of get', data);
-        this.setState({currStory:data})
+        this.setState({currStory:data});
       })
     })
     .catch((err) => {
@@ -79,21 +79,34 @@ class App extends React.Component {
   }
 
   handleNewSubmission(title, text) {
-    console.log('clicked submit');
-    console.log('title and text',title, text);
     if (title.length === 0 || text.length === 0) {
       alert('You must submit a title and text');
     } else {
       console.log('ready to make new story');
       Axios.post('http://127.0.0.1:8000/campfire/stories',{Title: title})
       .then((data) => {
-        console.log('added story to DB', data);
-        Axios.get('http://127.0.0.1:8000/campfire/newStory', {params:{story_ID:this.state.story_ID}
+        Axios.get('http://127.0.0.1:8000/campfire/newStory',{params:{story_ID:this.state.story_ID}})
+        .then(({data}) =>{
+          console.log(data, 'asdigjaioer')
+          var newStory_ID = data[data.length -1].story_ID;
+          console.log(newStory_ID, '$$$$$$$$$$$$$$$$4')
+          this.setState({story_ID:newStory_ID});
+          //adding comment to database
+          Axios.post('http://127.0.0.1:8000/campfire/messages', {message:text,story_ID:newStory_ID,user_ID:this.state.user_ID})
+          .then((data) => {
+            console.log('data', data);
+            Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:newStory_ID}})
+            .then(({data}) =>{
+              console.log('data inside of get', data);
+              this.setState({currStory:data});
+            })
+            .then((data) => {
+              this.getTitles();
+              this.setState({Title:title})
+            })
+          })
+        })
       })
-        })
-        .then((data) => {
-          console.log('data from get request', data);
-        })
     }
   }
 

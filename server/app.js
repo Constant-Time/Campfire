@@ -26,7 +26,7 @@ app.post('/campfire/users', (req, res) => {
 });
 //select all users
 app.get('/campfire/users', (req, res) => {
-  console.log(req.body, 'req.body');
+  console.log('req.body',req.body);
 	// db('users').select('*').then(data => res.send(data));
 	User.selectAll().then((data) => {res.send(data)})
 });
@@ -46,7 +46,7 @@ app.get('/campfire/messages', (req, res) => {
 
 
 app.post('/campfire/stories', (req, res) => {
-  console.log(req.body, 'req.body');
+  console.log('req.body',req.body);
   Stories.addStory(req.body);
   res.end();
 })

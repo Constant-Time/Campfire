@@ -38,8 +38,11 @@ class Modal extends React.Component {
               <div>
                 	<textarea id='textForNewStory' placeholder='Start story here, 250 characters or less!' rows="5" cols="50"></textarea>
                 </div>
-              <button onClick={(e) => {e.preventDefault(), this.props.handleNewSubmission(document.getElementById('newTitle').value, document.getElementById('textForNewStory').value)()}}>Submit</button>
-            </form>
+              <button onClick={(e) => {
+                  e.preventDefault()
+                   this.props.handleNewSubmission(document.getElementById('newTitle').value, document.getElementById('textForNewStory').value)
+                }}>Submit</button>
+           </form>
           </div>
           <div className="footer">
             <button onClick={this.props.onClose}>
