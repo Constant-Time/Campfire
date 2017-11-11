@@ -1,3 +1,4 @@
+require('dotenv').config();
 var db = require('../db/db.js');
 var express = require('express');
 var app = express();
@@ -78,4 +79,3 @@ app.get('/campfire/checkUserExists', (req, res) => {
   User.findUser(user)
   .then((data) => {res.send(data)})
 })
-
