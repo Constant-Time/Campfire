@@ -16,7 +16,7 @@ var InputField = React.createClass({
     },
 	render: function() {
     	return (
-        	<div>
+					<div>
             	<textarea id="NewStoryText" rows="5" cols="50" onChange={this.handleChange}></textarea>
                 <p>Characters Left: {this.state.chars_left}</p>
             </div>

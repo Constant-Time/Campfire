@@ -25,4 +25,8 @@ User.findUser = (data) => {
   return db('users').where({username:data}).select('*')
 }
 
+User.findUsername = (data) => {
+  return db('users').where({user_ID: data.user_ID}).select('username')
+}
+
 module.exports = User;
