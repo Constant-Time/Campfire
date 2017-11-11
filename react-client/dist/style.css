@@ -83,3 +83,7 @@ img {
 .signupBtn {
   font-size: 20px;
 }
+
+.welcomeMsg {
+  text-align: center;
+}
