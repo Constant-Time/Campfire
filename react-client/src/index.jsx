@@ -172,6 +172,7 @@ class App extends React.Component {
     </form>
     return (
       <div>
+        {!this.state.isLoggedIn ?
         <div className="loginSignup">
           <Login showLogin={this.state.isLoginOpen} handleLogin={this.handleLogin.bind(this)}
           onClose={this.toggleLoginModal.bind(this)} />
@@ -180,6 +181,7 @@ class App extends React.Component {
             <button className="loginBtn" onClick={() => this.startLogin.call(this)}>Login</button>
             <button className="signupBtn" onClick={() => this.startSignup.call(this)}>Signup</button>
           </div>
+          : <h3 className="welcomeMsg"> Welcome, {this.state.username}!</h3>}
       <div className="container">
         <div className="sidebar">
           <div>
