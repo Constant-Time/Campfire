@@ -33,7 +33,7 @@ class App extends React.Component {
 
 
   getTitles() {
-    Axios.get('http://127.0.0.1:8000/campfire/stories')
+    Axios.get('/campfire/stories')
     .then((data) => {
       this.setState({stories:data.data})
     })
@@ -48,10 +48,10 @@ class App extends React.Component {
       alert('Cannot submit an empty field');
       return;
     }
-    Axios.post('http://127.0.0.1:8000/campfire/messages',{message:text,story_ID:this.state.story_ID,user_ID:this.state.user_ID})
+    Axios.post('/campfire/messages',{message:text,story_ID:this.state.story_ID,user_ID:this.state.user_ID})
     .then((data) => {
       // console.log('data in axios post', data.config.data);
-      Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:this.state.story_ID}})
+      Axios.get('/campfire/messages', {params:{story_ID:this.state.story_ID}})
       .then(({data}) =>{
         this.setState({currStory:data});
       })
@@ -64,7 +64,7 @@ class App extends React.Component {
   handleTitleClick(story_ID, Title) {
     this.setState({story_ID:story_ID});
     //update currStory;
-    Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:story_ID}
+    Axios.get('/campfire/messages', {params:{story_ID:story_ID}
   })
     .then(({data}) =>{
       this.setState({currStory:data})
@@ -81,13 +81,13 @@ class App extends React.Component {
   }
 
   handleSignup(username, password) {
-    Axios.get('http://127.0.0.1:8000/campfire/checkUserExists', {params:{username: username}
+    Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
       if(data.length !== 0){
         alert('Username is already taken')
       } else {
-        Axios.post('http://127.0.0.1:8000/campfire/users', {username:username, password:password})
+        Axios.post('/campfire/users', {username:username, password:password})
           .then(({data}) => {
             this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
           })
@@ -99,7 +99,7 @@ class App extends React.Component {
   }
 
   handleLogin(username, password) {
-    Axios.get('http://127.0.0.1:8000/campfire/checkUserExists', {params:{username: username}
+    Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
       if(data.length === 0){
@@ -118,18 +118,18 @@ class App extends React.Component {
       alert('You must submit a title and text');
     } else {
       console.log('ready to make new story');
-      Axios.post('http://127.0.0.1:8000/campfire/stories',{Title: title})
+      Axios.post('/campfire/stories',{Title: title})
       .then((data) => {
-        Axios.get('http://127.0.0.1:8000/campfire/newStory',{params:{story_ID:this.state.story_ID}})
+        Axios.get('/campfire/newStory',{params:{story_ID:this.state.story_ID}})
         .then(({data}) =>{
 
           var newStory_ID = data[data.length -1].story_ID;
           this.setState({story_ID:newStory_ID});
           //adding comment to database
-          Axios.post('http://127.0.0.1:8000/campfire/messages', {message:text,story_ID:newStory_ID,user_ID:this.state.user_ID})
+          Axios.post('/campfire/messages', {message:text,story_ID:newStory_ID,user_ID:this.state.user_ID})
           .then((data) => {
 
-            Axios.get('http://127.0.0.1:8000/campfire/messages', {params:{story_ID:newStory_ID}})
+            Axios.get('/campfire/messages', {params:{story_ID:newStory_ID}})
             .then(({data}) =>{
               this.setState({currStory:data});
             })
