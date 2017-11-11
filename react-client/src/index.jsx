@@ -144,6 +144,10 @@ class App extends React.Component {
     }
   }
 
+  toggleLogin(){
+    this.setState({isLoggedIn:!this.state.isLoggedIn});
+  }
+
   startNewStory() {
     this.toggleNewStoryModal()
   }
@@ -181,7 +185,9 @@ class App extends React.Component {
             <button className="loginBtn" onClick={() => this.startLogin.call(this)}>Login</button>
             <button className="signupBtn" onClick={() => this.startSignup.call(this)}>Signup</button>
           </div>
-          : <h3 className="welcomeMsg"> Welcome, {this.state.username}!</h3>}
+          :  <div className="logout"> <h3 className="welcomeMsg"> Welcome, {this.state.username}!</h3>
+            <button className="loginBtn" onClick={() => this.toggleLogin.call(this)}>Log Out</button>
+          </div>}
       <div className="container">
         <div className="sidebar">
           <div>

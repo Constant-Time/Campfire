@@ -87,3 +87,8 @@ img {
 .welcomeMsg {
   text-align: center;
 }
+
+.logout {
+  text-align: center;
+  font-size: 20px;
+}
