@@ -3,7 +3,7 @@ import Message from './message.jsx'
 
 const MessageList = (props) => (
   <div className="message-list">
-   {props.messages.map(message => <Message message={message} />)}
+   {props.messages.map((message, index) => <Message message={message} key={index}/>)}
   </div>
 );
 
