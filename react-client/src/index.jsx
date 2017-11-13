@@ -13,6 +13,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      counter: 0,
       username: '',
       isLoggedIn: false,
       isNewStoryOpen: false,
@@ -27,7 +28,13 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getTitles()
+    this.getTitles();
+    setInterval(() =>
+    Axios.get('/campfire/messages', {params:{story_ID:this.state.story_ID}})
+    .then(({data}) =>{
+      this.setState({currStory:data})
+    }), 20000);
+    //this.setState({counter: (this.state.counter + 1)}), 20000);
   }
 
 
@@ -49,7 +56,11 @@ class App extends React.Component {
       return;
     }
 
-    
+    // console.log('last item in currStory', this.state.currStory[this.state.currStory.length -1].username)
+    if (this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
+      alert('Can\'t post twice in a row, wait for another user or check out another story');
+      return;
+    }
 
     Axios.post('/campfire/messages',{message:text,story_ID:this.state.story_ID,user_ID:this.state.user_ID})
     .then((data) => {
