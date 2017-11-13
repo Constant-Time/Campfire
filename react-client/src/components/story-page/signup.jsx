@@ -36,7 +36,7 @@ class Signup extends React.Component {
           <div className="signup">
             <form>
               <input type="text" placeholder="username" id="username"></input>
-              <input type="text" placeholder="password" id="password"></input>
+              <input type="password" placeholder="password" id="password"></input>
               <button onClick={(e) => {e.preventDefault(), this.props.handleSignup(document.getElementById('username').value, document.getElementById('password').value)}}>Sign Up</button>
             </form>
             <div className="footer">
