@@ -49,7 +49,11 @@ class App extends React.Component {
       return;
     }
 
-    
+    console.log('last item in currStory', this.state.currStory[this.state.currStory.length -1].username)
+    if (this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
+      alert('Can\'t post twice in a row, wait for another user or check out another story');
+      return;
+    }
 
     Axios.post('/campfire/messages',{message:text,story_ID:this.state.story_ID,user_ID:this.state.user_ID})
     .then((data) => {
