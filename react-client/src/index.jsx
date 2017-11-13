@@ -19,8 +19,8 @@ class App extends React.Component {
       isLoginOpen: false,
       isSignupOpen: false,
       Title:'<--- Welcome To Campfire, select a story to get started',
-      story_ID:1,
-      user_ID:1,
+      story_ID:0,
+      user_ID:0,
       stories: [],
       currStory: []
     }
@@ -48,11 +48,15 @@ class App extends React.Component {
       alert('Cannot submit an empty field');
       return;
     }
+
+    
+
     Axios.post('/campfire/messages',{message:text,story_ID:this.state.story_ID,user_ID:this.state.user_ID})
     .then((data) => {
       // console.log('data in axios post', data.config.data);
       Axios.get('/campfire/messages', {params:{story_ID:this.state.story_ID}})
       .then(({data}) =>{
+        console.log(data);
         this.setState({currStory:data});
       })
     })
@@ -89,8 +93,17 @@ class App extends React.Component {
       } else {
         Axios.post('/campfire/users', {username:username, password:password})
           .then(({data}) => {
+            console.log('data in handleSignup', data);
             this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
           })
+          .then(Axios.get('campfire/getUserID', {params:{username: username}
+        })
+        .then(({data}) =>{
+          console.log(data, 'data at 99');
+          console.log(data[0].user_ID);
+          this.setState({user_ID: data[0].user_ID});
+        })
+      )
       }
     })
     .catch((err) => {
@@ -107,7 +120,14 @@ class App extends React.Component {
       } else if(password !== data[0].password){
         alert('Incorrect password');
       } else {
-        this.setState({isLoggedIn: true, username: username, isLoginOpen: false})
+        this.setState({isLoggedIn: true, username: username, isLoginOpen: false});
+        Axios.get('campfire/getUserID', {params:{username: username}
+      })
+      .then(({data}) =>{
+        console.log(data, 'data at 99');
+        console.log(data[0].user_ID);
+        this.setState({user_ID: data[0].user_ID});
+      })
       }
     })
   }
