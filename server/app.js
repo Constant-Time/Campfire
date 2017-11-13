@@ -42,7 +42,7 @@ app.post('/campfire/messages', (req, res) => {
 app.get('/campfire/messages', (req, res) => {
   var param = req.query.story_ID
   console.log(param);
-	Messages.selectAll({story_ID:param}).then((data) => {res.send(data)})
+	Messages.selectAllWithNames({story_ID:param}).then((data) => {res.send(data)})
 		});
 
 
@@ -78,4 +78,12 @@ app.get('/campfire/checkUserExists', (req, res) => {
   var user = req.query.username;
   User.findUser(user)
   .then((data) => {res.send(data)})
+})
+
+app.get('/campfire/getUserID', (req, res) => {
+  var param = req.query.username;
+  console.log(param, 'param');
+  User.findUser(param)
+  .then((data) => {res.send(data)});
+  //res.end()
 })

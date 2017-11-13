@@ -23,4 +23,16 @@ Messages.selectAll = (data) => {
   return db('messages').where({story_ID:data.story_ID}).select('*')
 }
 
+Messages.selectAllWithNames = (data) => {
+  return db('messages')
+  .join('users','messages.user_ID','users.user_ID')
+  .where({story_ID:data.story_ID})
+  .select('messages.message', 'users.username')
+  .catch(err => {
+    console.log('err',err);
+  })
+
+}
+
+
 module.exports = Messages;
