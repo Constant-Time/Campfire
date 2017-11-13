@@ -33,7 +33,7 @@ class App extends React.Component {
     Axios.get('/campfire/messages', {params:{story_ID:this.state.story_ID}})
     .then(({data}) =>{
       this.setState({currStory:data})
-    }), 20000);
+    }), 5000);
     //this.setState({counter: (this.state.counter + 1)}), 20000);
   }
 
