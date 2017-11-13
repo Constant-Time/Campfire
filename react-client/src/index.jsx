@@ -56,7 +56,7 @@ class App extends React.Component {
       return;
     }
 
-    // console.log('last item in currStory', this.state.currStory[this.state.currStory.length -1].username)
+    console.log('last item in currStory', this.state.currStory[this.state.currStory.length -1].username)
     if (this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
       alert('Can\'t post twice in a row, wait for another user or check out another story');
       return;
@@ -88,7 +88,6 @@ class App extends React.Component {
   .catch((err) => {
     console.log(err);
   });
-    console.log(story_ID);
   }
 
   toggleNewStoryModal () {
@@ -239,8 +238,8 @@ class App extends React.Component {
           </div>
           <div>
             <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value), document.getElementById('NewStoryText').value = ''}}>
-              {this.state.isLoggedIn ? <InputField /> : null}
-              {this.state.isLoggedIn ? <button onClick={() => console.log('clicked')}>Submit!</button> : null}
+              {this.state.isLoggedIn && this.state.story_ID !== 0 ? <InputField /> : null}
+              {this.state.isLoggedIn && this.state.story_ID !== 0 ? <button>Submit!</button> : null}
             </form>
           </div>
         </div>
