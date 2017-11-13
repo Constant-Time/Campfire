@@ -54,6 +54,11 @@ class App extends React.Component {
     if (text.length === 0 ){
       alert('Cannot submit an empty field');
       return;
+    } else if (text.length > 250){
+      alert('Your submission is too long, please shorten it.');
+      return;
+    } else {
+      document.getElementById('NewStoryText').value = '';
     }
 
     console.log('last item in currStory', this.state.currStory[this.state.currStory.length -1].username)
@@ -146,7 +151,10 @@ class App extends React.Component {
   handleNewSubmission(title, text) {
     if (title.length === 0 || text.length === 0) {
       alert('You must submit a title and text');
-    } else {
+    } else if (text.length > 250){
+      alert('Your submission is too long please shorten it.')
+    }
+    else {
       console.log('ready to make new story');
       Axios.post('/campfire/stories',{Title: title})
       .then((data) => {
@@ -237,7 +245,7 @@ class App extends React.Component {
             <MessageList messages={this.state.currStory} />
           </div>
           <div>
-            <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value), document.getElementById('NewStoryText').value = ''}}>
+            <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
               {this.state.isLoggedIn && this.state.story_ID !== 0 ? <InputField /> : null}
               {this.state.isLoggedIn && this.state.story_ID !== 0 ? <button>Submit!</button> : null}
             </form>
