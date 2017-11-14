@@ -30,7 +30,10 @@ class App extends React.Component {
   }
 
   handleEdit(text, id,story_ID){
-    console.log('handling edit', text, id, story_ID)
+    if (text.length === 0){
+      alert('Cannot submit empty field');
+    }
+    else {console.log('handling edit', text, id, story_ID)
     Axios.post('/campfire/updateMessage',{message:text,id:id})
     .then((data)=>{
       console.log('sending');
@@ -39,7 +42,7 @@ class App extends React.Component {
         console.log('data before set state', )
         this.setState({currStory:data,editing:false})
       })
-    })
+    })}
   }
 
   componentDidMount() {
