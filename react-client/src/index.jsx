@@ -23,8 +23,26 @@ class App extends React.Component {
       story_ID:0,
       user_ID:0,
       stories: [],
-      currStory: []
+      currStory: [],
+      editing: false,
+      editingId: 0
     }
+  }
+
+  handleEdit(text, id,story_ID){
+    if (text.length === 0){
+      alert('Cannot submit empty field');
+    }
+    else {console.log('handling edit', text, id, story_ID)
+    Axios.post('/campfire/updateMessage',{message:text,id:id})
+    .then((data)=>{
+      console.log('sending');
+      Axios.get('/campfire/messages', {params:{story_ID:story_ID}})
+      .then(({data}) =>{
+        console.log('data before set state', )
+        this.setState({currStory:data,editing:false})
+      })
+    })}
   }
 
   componentDidMount() {
@@ -33,11 +51,9 @@ class App extends React.Component {
     Axios.get('/campfire/messages', {params:{story_ID:this.state.story_ID}})
     .then(({data}) =>{
       this.setState({currStory:data})
-    }), 20000);
+    }), 5000);
     //this.setState({counter: (this.state.counter + 1)}), 20000);
   }
-
-
 
   getTitles() {
     Axios.get('/campfire/stories')
@@ -49,11 +65,20 @@ class App extends React.Component {
     })
   }
 
+  displayEditWindow(id){
+    console.log('displayEditWindow',id);
+    this.setState({editing:true, editingId:id});
+  }
 
   handleSubmitClick (text) {
     if (text.length === 0 ){
       alert('Cannot submit an empty field');
       return;
+    } else if (text.length > 250){
+      alert('Your submission is too long, please shorten it.');
+      return;
+    } else {
+      document.getElementById('NewStoryText').value = '';
     }
 
     console.log('last item in currStory', this.state.currStory[this.state.currStory.length -1].username)
@@ -146,7 +171,10 @@ class App extends React.Component {
   handleNewSubmission(title, text) {
     if (title.length === 0 || text.length === 0) {
       alert('You must submit a title and text');
-    } else {
+    } else if (text.length > 250){
+      alert('Your submission is too long please shorten it.')
+    }
+    else {
       console.log('ready to make new story');
       Axios.post('/campfire/stories',{Title: title})
       .then((data) => {
@@ -198,7 +226,6 @@ class App extends React.Component {
     this.toggleSignupModal()
   }
 
-
   render() {
     var title = this.state.Title ? <h2>{this.state.Title}</h2> : <form className='newStoryForm'>
       <h3>Add a title and the first part of the story, then hit submit</h3>
@@ -234,10 +261,10 @@ class App extends React.Component {
         <div className='messageBox'>
           <div>
             {title}
-            <MessageList messages={this.state.currStory} />
+            <MessageList state={this.state} handleEdit={this.handleEdit.bind(this)} displayEditWindow={this.displayEditWindow.bind(this)} messages={this.state.currStory} username={this.state.username}/>
           </div>
           <div>
-            <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value), document.getElementById('NewStoryText').value = ''}}>
+            <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
               {this.state.isLoggedIn && this.state.story_ID !== 0 ? <InputField /> : null}
               {this.state.isLoggedIn && this.state.story_ID !== 0 ? <button>Submit!</button> : null}
             </form>
