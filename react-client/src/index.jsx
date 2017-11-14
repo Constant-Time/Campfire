@@ -55,8 +55,6 @@ class App extends React.Component {
     //this.setState({counter: (this.state.counter + 1)}), 20000);
   }
 
-
-
   getTitles() {
     Axios.get('/campfire/stories')
     .then((data) => {
@@ -227,7 +225,6 @@ class App extends React.Component {
   startSignup() {
     this.toggleSignupModal()
   }
-
 
   render() {
     var title = this.state.Title ? <h2>{this.state.Title}</h2> : <form className='newStoryForm'>
