@@ -37,7 +37,7 @@ class App extends React.Component {
       Axios.get('/campfire/messages', {params:{story_ID:story_ID}})
       .then(({data}) =>{
         console.log('data before set state', )
-        this.setState({currStory:data})
+        this.setState({currStory:data,editing:false})
       })
     })
   }
