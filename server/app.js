@@ -87,3 +87,11 @@ app.get('/campfire/getUserID', (req, res) => {
   .then((data) => {res.send(data)});
   //res.end()
 })
+
+
+app.post('/campfire/updateMessage', (req, res) => {
+  console.log('req.body in updateMessage route',req.body);
+  Messages.updateMessage(req.body).then(data =>{
+    res.sendStatus(200);
+  })
+})

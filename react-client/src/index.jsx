@@ -23,8 +23,23 @@ class App extends React.Component {
       story_ID:0,
       user_ID:0,
       stories: [],
-      currStory: []
+      currStory: [],
+      editing: false,
+      editingId: 0
     }
+  }
+
+  handleEdit(text, id,story_ID){
+    console.log('handling edit', text, id, story_ID)
+    Axios.post('/campfire/updateMessage',{message:text,id:id})
+    .then((data)=>{
+      console.log('sending');
+      Axios.get('/campfire/messages', {params:{story_ID:story_ID}})
+      .then(({data}) =>{
+        console.log('data before set state', )
+        this.setState({currStory:data})
+      })
+    })
   }
 
   componentDidMount() {
@@ -49,6 +64,10 @@ class App extends React.Component {
     })
   }
 
+  displayEditWindow(id){
+    console.log('displayEditWindow',id);
+    this.setState({editing:true, editingId:id});
+  }
 
   handleSubmitClick (text) {
     if (text.length === 0 ){
@@ -242,7 +261,7 @@ class App extends React.Component {
         <div className='messageBox'>
           <div>
             {title}
-            <MessageList messages={this.state.currStory} />
+            <MessageList state={this.state} handleEdit={this.handleEdit.bind(this)} displayEditWindow={this.displayEditWindow.bind(this)} messages={this.state.currStory} username={this.state.username}/>
           </div>
           <div>
             <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>

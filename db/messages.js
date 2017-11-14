@@ -18,6 +18,10 @@ Messages.addMessage = (data) => {
 
 //db and choose table
 // then start query
+Messages.updateMessage = (data) =>{
+  return db('messages').update('message', data.message)
+  .where({'id':data.id})
+}
 
 Messages.selectAll = (data) => {
   return db('messages').where({story_ID:data.story_ID}).select('*')
@@ -27,11 +31,10 @@ Messages.selectAllWithNames = (data) => {
   return db('messages')
   .join('users','messages.user_ID','users.user_ID')
   .where({story_ID:data.story_ID})
-  .select('messages.message', 'users.username')
+  .select('messages.message', 'users.username','messages.id')
   .catch(err => {
     console.log('err',err);
   })
-
 }
 
 
