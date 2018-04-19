@@ -92,7 +92,7 @@ class App extends React.Component {
       // console.log('data in axios post', data.config.data);
       Axios.get('/campfire/messages', {params:{story_ID:this.state.story_ID}})
       .then(({data}) =>{
-        console.log(data);
+        // console.log(data);
         this.setState({currStory:data});
       })
     })
@@ -128,14 +128,14 @@ class App extends React.Component {
       } else {
         Axios.post('/campfire/users', {username:username, password:password})
           .then(({data}) => {
-            console.log('data in handleSignup', data);
+            // console.log('data in handleSignup', data);
             this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
           })
           .then(Axios.get('campfire/getUserID', {params:{username: username}
         })
         .then(({data}) =>{
-          console.log(data, 'data at 99');
-          console.log(data[0].user_ID);
+          // console.log(data, 'data at 99');
+          // console.log(data[0].user_ID);
           this.setState({user_ID: data[0].user_ID});
         })
       )
