@@ -19,7 +19,7 @@ class App extends React.Component {
       isNewStoryOpen: false,
       isLoginOpen: false,
       isSignupOpen: false,
-      Title:'<--- Welcome To Campfire, select a story to get started',
+      Title:'Welcome to Campfire - select a story to get started',
       story_ID:0,
       user_ID:0,
       stories: [],
