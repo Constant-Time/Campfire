@@ -25,7 +25,8 @@ class App extends React.Component {
       stories: [],
       currStory: [],
       editing: false,
-      editingId: 0
+      editingId: 0,
+      chars_left: 250
     }
   }
 
@@ -192,6 +193,14 @@ class App extends React.Component {
     }
   }
 
+  handleInputFieldChange(event) {
+    var max_chars = 250;
+  	var input = event.target.value;
+    this.setState({
+    	chars_left: max_chars - input.length
+    });
+  }
+
   toggleLogin(){
     this.setState({isLoggedIn:!this.state.isLoggedIn});
   }
@@ -255,7 +264,7 @@ class App extends React.Component {
           </div>
           <div>
             <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
-              {this.state.isLoggedIn && this.state.story_ID !== 0 ? <InputField /> : null}
+              {this.state.isLoggedIn && this.state.story_ID !== 0 ? <InputField chars_left={this.state.chars_left} handleChange={this.handleInputFieldChange.bind(this)} /> : null}
               {this.state.isLoggedIn && this.state.story_ID !== 0 ? <button>Submit!</button> : null}
             </form>
           </div>
