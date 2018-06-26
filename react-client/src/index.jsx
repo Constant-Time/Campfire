@@ -33,13 +33,12 @@ class App extends React.Component {
     if (text.length === 0){
       alert('Cannot submit empty field');
     }
-    else {console.log('handling edit', text, id, story_ID)
+    else {
     Axios.post('/campfire/updateMessage',{message:text,id:id})
     .then((data)=>{
       console.log('sending');
       Axios.get('/campfire/messages', {params:{story_ID:story_ID}})
       .then(({data}) =>{
-        console.log('data before set state', )
         this.setState({currStory:data,editing:false})
       })
     })}
@@ -61,12 +60,11 @@ class App extends React.Component {
       this.setState({stories:data.data})
     })
     .catch((err) => {
-      console.log(err)
+      console.error(err)
     })
   }
 
   displayEditWindow(id){
-    console.log('displayEditWindow',id);
     this.setState({editing:true, editingId:id});
   }
 
@@ -81,7 +79,6 @@ class App extends React.Component {
       document.getElementById('NewStoryText').value = '';
     }
 
-    console.log('last item in currStory', this.state.currStory[this.state.currStory.length -1].username)
     if (this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
       alert('Can\'t post twice in a row, wait for another user or check out another story');
       return;
@@ -89,15 +86,13 @@ class App extends React.Component {
 
     Axios.post('/campfire/messages',{message:text,story_ID:this.state.story_ID,user_ID:this.state.user_ID})
     .then((data) => {
-      // console.log('data in axios post', data.config.data);
       Axios.get('/campfire/messages', {params:{story_ID:this.state.story_ID}})
       .then(({data}) =>{
-        // console.log(data);
         this.setState({currStory:data});
       })
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
   }
 
@@ -111,7 +106,7 @@ class App extends React.Component {
       this.setState({Title:Title})
     })
   .catch((err) => {
-    console.log(err);
+    console.error(err);
   });
   }
 
@@ -128,21 +123,18 @@ class App extends React.Component {
       } else {
         Axios.post('/campfire/users', {username:username, password:password})
           .then(({data}) => {
-            // console.log('data in handleSignup', data);
             this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
           })
           .then(Axios.get('campfire/getUserID', {params:{username: username}
         })
         .then(({data}) =>{
-          // console.log(data, 'data at 99');
-          // console.log(data[0].user_ID);
           this.setState({user_ID: data[0].user_ID});
         })
       )
       }
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     })
   }
 
@@ -159,8 +151,6 @@ class App extends React.Component {
         Axios.get('campfire/getUserID', {params:{username: username}
       })
       .then(({data}) =>{
-        console.log(data, 'data at 99');
-        console.log(data[0].user_ID);
         this.setState({user_ID: data[0].user_ID});
       })
       }

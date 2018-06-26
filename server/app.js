@@ -21,19 +21,15 @@ app.use(function(req, res, next) {
 //
 //insert user
 app.post('/campfire/users', (req, res) => {
-  console.log('req.body', req.body);
 	User.addUser(req.body);
   res.end();
 });
 //select all users
 app.get('/campfire/users', (req, res) => {
-  console.log('req.body',req.body);
-	// db('users').select('*').then(data => res.send(data));
 	User.selectAll().then((data) => {res.send(data)})
 });
 //insert message
 app.post('/campfire/messages', (req, res) => {
-  console.log('req.body', req.body);
 	Messages.addMessage(req.body);
   res.send(req.body.message);
   // res.end();
@@ -41,13 +37,11 @@ app.post('/campfire/messages', (req, res) => {
 //select messages
 app.get('/campfire/messages', (req, res) => {
   var param = req.query.story_ID
-  console.log(param);
 	Messages.selectAllWithNames({story_ID:param}).then((data) => {res.send(data)})
 		});
 
 
 app.post('/campfire/stories', (req, res) => {
-  console.log('req.body',req.body);
   Stories.addStory(req.body);
   res.end();
 })
@@ -82,7 +76,6 @@ app.get('/campfire/checkUserExists', (req, res) => {
 
 app.get('/campfire/getUserID', (req, res) => {
   var param = req.query.username;
-  console.log(param, 'param');
   User.findUser(param)
   .then((data) => {res.send(data)});
   //res.end()
@@ -90,7 +83,6 @@ app.get('/campfire/getUserID', (req, res) => {
 
 
 app.post('/campfire/updateMessage', (req, res) => {
-  console.log('req.body in updateMessage route',req.body);
   Messages.updateMessage(req.body).then(data =>{
     res.sendStatus(200);
   })

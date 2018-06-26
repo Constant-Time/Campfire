@@ -8,14 +8,3 @@ const MessageList = (props) => (
 );
 
 export default MessageList;
-/*
-MessageList.propTypes = {
-  messages: React.PropTypes.object.isRequired
-}
-
-import message from (./message);
-
-window.MessageList = MessageList;
-*/
-//comment to fix stuff
-//
