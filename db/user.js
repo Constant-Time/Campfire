@@ -1,32 +1,32 @@
 var db = require('./db.js');
 
-var User = {};
+var Users = {};
 
-User.addUser = (data) => {
+// add a user
+Users.addUser = (data) => {
   db('users')
-  .insert({
-    username: data.username,
-    password: data.password
-  })
-  .catch(err => {
-    console.error(err);
-  });
-};
-
-
-//db and choose table
-// then start query
-//
-User.selectAll = (data) => {
-  return db('users').select('*')
+    .insert({
+      username: data.username,
+      password: data.password
+    })
+    .catch(err => {
+      console.error(err)
+    })
 }
 
-User.findUser = (data) => {
-  return db('users').where({username:data}).select('*')
+// select all users
+Users.selectAll = (data) => {
+  db('users').select('*')
 }
 
-User.findUsername = (data) => {
+// select a user by username
+Users.findUser = (data) => {
+  return db('users').where({username: data}).select('*')
+}
+
+// find a username based on user id
+Users.findUsername = (data) => {
   return db('users').where({user_ID: data.user_ID}).select('username')
 }
 
-module.exports = User;
+module.exports(Users)

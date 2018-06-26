@@ -2,26 +2,23 @@ var db = require('./db.js');
 
 var Stories = {};
 
+// add a new story
 Stories.addStory = (data) => {
   db('stories')
-  .insert({
-    Title: data.Title,
-  })
-  .catch(err => {
-    console.error(err);
-  });
-};
+    .insert({Title: data.title})
+    .catch(err => {
+      console.error(err)
+    })
+}
 
-
-//db and choose table
-// then start query
-//
+// find all story data
 Stories.selectAll = (data) => {
   return db('stories').select('*')
 }
 
-Stories.selectStory_ID = (data) => {
-  return db('stories').select('story_ID');
+// find story IDs
+Stories.selectID = (data) => {
+  return db('stories').select('story_ID')
 }
 
-module.exports = Stories;
+module.exports = Stories

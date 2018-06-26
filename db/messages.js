@@ -1,41 +1,35 @@
-var db = require('./db.js');
+Messagevar db = require('./db.js');
 
 var Messages = {};
 
+// add a new message to the DB
 Messages.addMessage = (data) => {
-  console.log('data in messages.js', data);
   db('messages')
-  .insert({
-    message: data.message,
-    story_ID:data.story_ID,
-    user_ID:data.user_ID
-  })
-  .catch(err => {
-    console.error(err);
-  });
-};
-
-
-//db and choose table
-// then start query
-Messages.updateMessage = (data) =>{
-  return db('messages').update('message', data.message)
-  .where({'id':data.id})
+    .insert({
+      message: data.message,
+      story_ID: data.story_ID,
+      user_ID: data.user_ID
+    })
+    .catch(error => {
+      console.error(error)
+    })
 }
 
+// update an existing message
+Messages.updateMessage = (data) => {
+  return db('messages').update('message', 'data.message')
+  .where({'id': data.id})
+}
+
+// return all messages from a story
 Messages.selectAll = (data) => {
-  return db('messages').where({story_ID:data.story_ID}).select('*')
-}
-
-Messages.selectAllWithNames = (data) => {
   return db('messages')
-  .join('users','messages.user_ID','users.user_ID')
-  .where({story_ID:data.story_ID})
-  .select('messages.message', 'users.username','messages.id')
-  .catch(err => {
-    console.log('err',err);
-  })
+    .join('users', 'messages.user_ID', 'users.user_ID')
+    .where({story_ID: data.story_ID})
+    .select('messages.message', 'users.username', 'messages.id')
+    .catch(error => {
+      console.error(error)
+    })
 }
 
-
-module.exports = Messages;
+module.exports = Messages
