@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import StoryList from './components/story-page/StoryList.jsx';
-import MessageList from './components/story-page/messageList.jsx';
-import InputField from './components/story-page/inputField.jsx';
+import StoryList from './components/StoryList.jsx';
+import MessageList from './components/messageList.jsx';
+import InputField from './components/inputField.jsx';
 import Axios from 'axios';
-import Modal from './components/story-page/Modal.jsx';
-import Login from './components/story-page/login.jsx';
-import Signup from './components/story-page/signup.jsx';
+import Modal from './components/Modal.jsx';
+import Login from './components/login.jsx';
+import Signup from './components/signup.jsx';
 
 class App extends React.Component {
   constructor(props) {
