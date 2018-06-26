@@ -1,9 +1,9 @@
 var db = require('./db.js');
 
-var Users = {};
+var User = {};
 
 // add a user
-Users.addUser = (data) => {
+User.addUser = (data) => {
   db('users')
     .insert({
       username: data.username,
@@ -15,18 +15,18 @@ Users.addUser = (data) => {
 }
 
 // select all users
-Users.selectAll = (data) => {
+User.selectAll = (data) => {
   db('users').select('*')
 }
 
 // select a user by username
-Users.findUser = (data) => {
+User.findUser = (data) => {
   return db('users').where({username: data}).select('*')
 }
 
 // find a username based on user id
-Users.findUsername = (data) => {
+User.findUsername = (data) => {
   return db('users').where({user_ID: data.user_ID}).select('username')
 }
 
-module.exports(Users)
+module.exports = User;

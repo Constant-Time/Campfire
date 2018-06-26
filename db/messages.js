@@ -1,4 +1,4 @@
-Messagevar db = require('./db.js');
+var db = require('./db.js');
 
 var Messages = {};
 
@@ -17,12 +17,12 @@ Messages.addMessage = (data) => {
 
 // update an existing message
 Messages.updateMessage = (data) => {
-  return db('messages').update('message', 'data.message')
+  return db('messages').update('message', data.message)
   .where({'id': data.id})
 }
 
 // return all messages from a story
-Messages.selectAll = (data) => {
+Messages.selectAllWithNames = (data) => {
   return db('messages')
     .join('users', 'messages.user_ID', 'users.user_ID')
     .where({story_ID: data.story_ID})

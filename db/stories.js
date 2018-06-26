@@ -5,7 +5,9 @@ var Stories = {};
 // add a new story
 Stories.addStory = (data) => {
   db('stories')
-    .insert({Title: data.title})
+    .insert({
+      Title: data.Title,
+    })
     .catch(err => {
       console.error(err)
     })
@@ -17,7 +19,7 @@ Stories.selectAll = (data) => {
 }
 
 // find story IDs
-Stories.selectID = (data) => {
+Stories.selectStory_ID = (data) => {
   return db('stories').select('story_ID')
 }
 
