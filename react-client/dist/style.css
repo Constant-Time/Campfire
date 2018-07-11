@@ -1,4 +1,4 @@
-html {
+/*html {
   font-family: sans-serif;
   background-color: #F2E9AC;
 }
@@ -14,21 +14,23 @@ h2 {
   text-decoration: underline;
   text-align: center;
 }
-
+/*
 img {
   display: block;
   margin: 0 auto;
   width: 100px;
   height: 100px;
 }
-
+*/
+/*
 .container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding: 5px;
 }
-
+*/
+/*
 .sidebar {
   flex: .25;
   text-align: center;
@@ -90,4 +92,45 @@ img {
 
 .logout {
   text-align: center;
+}
+*/
+//Adding bootstrap styling
+
+#campfireBrand {
+    display: inline-block;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
+}
+
+#campfireBrand img {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+#welcomeMessage {
+  color: white;
+  border: none;
+  opacity: 1;
+}
+
+.mainHeaderButton {
+  border-width: 0 !important;
+  color: yellow;
+  box-shadow: none !important;
+}
+
+@media (max-width: 575px) {
+  .right_col #welcomeMessage {
+  }
+  .left_col, .right_col {
+    text-align: center;
+    justify-content: center;
+  }
+
+  #campfireBrand {
+  }
 }

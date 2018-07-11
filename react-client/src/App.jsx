@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
+declare var $ : any;
 import StoryList from './components/StoryList.jsx';
 import MessageList from './components/messageList.jsx';
 import InputField from './components/inputField.jsx';
@@ -8,6 +8,11 @@ import Axios from 'axios';
 import Modal from './components/Modal.jsx';
 import Login from './components/login.jsx';
 import Signup from './components/signup.jsx';
+import TopBar from './components/TopBar.jsx';
+import NewLogInModal from './components/NewLogInModal.jsx'
+import NewSignUpModal from './components/NewSignUpModal.jsx'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -115,7 +120,8 @@ class App extends React.Component {
     this.setState({isNewStoryOpen: !this.state.isNewStoryOpen});
   }
 
-  handleSignup(username, password) {
+  handleSignUp(username, password) {
+    console.log('signing up', username, password)
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
@@ -125,6 +131,8 @@ class App extends React.Component {
         Axios.post('/campfire/users', {username:username, password:password})
           .then(({data}) => {
             this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
+            console.log("closing modal");
+            $('#NewSignUpModal').modal('hide');
           })
           .then(Axios.get('campfire/getUserID', {params:{username: username}
         })
@@ -140,6 +148,7 @@ class App extends React.Component {
   }
 
   handleLogin(username, password) {
+    console.log('handling login');
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
@@ -153,6 +162,7 @@ class App extends React.Component {
       })
       .then(({data}) =>{
         this.setState({user_ID: data[0].user_ID});
+        $('#NewLogInModal').modal('hide');
       })
       }
     })
@@ -202,7 +212,7 @@ class App extends React.Component {
   }
 
   toggleLogin(){
-    this.setState({isLoggedIn:!this.state.isLoggedIn});
+    this.setState({isLoggedIn:!this.state.isLoggedIn, username: ''});
   }
 
   startNewStory() {
@@ -232,18 +242,9 @@ class App extends React.Component {
     </form>
     return (
       <div>
-        {!this.state.isLoggedIn ?
-        <div className="loginSignup">
-          <Login showLogin={this.state.isLoginOpen} handleLogin={this.handleLogin.bind(this)}
-          onClose={this.toggleLoginModal.bind(this)} />
-          <Signup showSignup={this.state.isSignupOpen} handleSignup={this.handleSignup.bind(this)}
-            onClose={this.toggleSignupModal.bind(this)} />
-            <button className="loginBtn" onClick={() => this.startLogin.call(this)}>Login</button>
-            <button className="signupBtn" onClick={() => this.startSignup.call(this)}>Signup</button>
-          </div>
-          :  <div className="logout"> <h3 className="welcomeMsg"> Welcome, {this.state.username}!</h3>
-            <button className="loginBtn" onClick={() => this.toggleLogin.call(this)}>Log Out</button>
-          </div>}
+        <TopBar toggleLogout={this.toggleLogin.bind(this)} isLoggedIn={this.state.isLoggedIn} userName={this.state.username}
+        logOut={this.toggleLogin.bind(this)}/>
+
       <div className="container">
         <div className="sidebar">
           <div>
@@ -270,6 +271,8 @@ class App extends React.Component {
           </div>
         </div>
       </div>
+      <NewLogInModal handleLogin={this.handleLogin.bind(this)}/>
+      <NewSignUpModal handleSignUp={this.handleSignUp.bind(this)} />
     </div>
     )
   }
@@ -278,3 +281,23 @@ class App extends React.Component {
 export default App;
 
 ReactDOM.render(<App />, document.getElementById('app'));
+
+
+
+
+/* EXTRANEOUS
+
+{!this.state.isLoggedIn ?
+<div className="loginSignup">
+  <Login showLogin={this.state.isLoginOpen} handleLogin={this.handleLogin.bind(this)}
+  onClose={this.toggleLoginModal.bind(this)} />
+  <Signup showSignup={this.state.isSignupOpen} handleSignup={this.handleSignUp.bind(this)}
+    onClose={this.toggleSignupModal.bind(this)} />
+    <button className="loginBtn" onClick={() => this.startLogin.call(this)}>Login</button>
+    <button className="signupBtn" onClick={() => this.startSignup.call(this)}>Signup</button>
+  </div>
+  :  <div className="logout"> <h3 className="welcomeMsg"> Welcome, {this.state.username}!</h3>
+    <button className="loginBtn" onClick={() => this.toggleLogin.call(this)}>Log Out</button>
+  </div>}
+
+  */
