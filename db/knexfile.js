@@ -4,6 +4,6 @@ module.exports = {
     database: 'campfire',
     host: 'localhost',
     user: 'root',
-    password: 'rootRoot8'
+    password: ''
   }
 }

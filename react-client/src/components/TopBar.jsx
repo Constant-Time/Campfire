@@ -40,14 +40,3 @@ class TopBar extends React.Component {
 }
 
 export default TopBar;
-
-
-/*
-<button className="btn btn-outline-light py-0 mr-2 mainHeaderButton" type="button">Login</button>
-<button className="btn btn-outline-light py-0 mx-2 mx-1 mainHeaderButton" type="button">Sign Up</button>
-*/
-
-/*
-<a id="welcomeMessage" className="btn btn-outline-light py-2 mx-1 disabled">Welcome Ben1!</a>
-<button className="btn btn-outline-light py-0 mx-2 mainHeaderButton" type="button">Log out</button>
-*/
