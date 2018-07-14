@@ -18,11 +18,11 @@ class TopBar extends React.Component {
   return (
     <header className="py-2 bg-danger text-white" id="main-header">
       <div className="container">
-        <div className="row align-items-center">
+        <div className="row align-items-center headerContainer">
           <div className="col-sm-6 left_col">
-            <div className="row justify-content-center">
+            <div className="row align-items-center justify-content-center" id="CampfireHeader">
             <a id="campfireBrand">
-              <h3 className="d-inline align-middle">Campfire</h3>
+              <h1 className="d-inline align-middle">Campfire</h1>
               <img id="campfireLogo" src="http://moziru.com/images/campfire-clipart-animated-gif-20.gif" width="50" height="50"></img>
             </a>
           </div>

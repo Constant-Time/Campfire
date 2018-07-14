@@ -9,8 +9,10 @@ import Modal from './components/Modal.jsx';
 import Login from './components/login.jsx';
 import Signup from './components/signup.jsx';
 import TopBar from './components/TopBar.jsx';
-import NewLogInModal from './components/NewLogInModal.jsx'
-import NewSignUpModal from './components/NewSignUpModal.jsx'
+import MainBody from './components/MainBody.jsx';
+import NewLogInModal from './components/NewLogInModal.jsx';
+import NewSignUpModal from './components/NewSignUpModal.jsx';
+import NewStoryModal from './components/NewStoryModal.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -24,8 +26,8 @@ class App extends React.Component {
       isNewStoryOpen: false,
       isLoginOpen: false,
       isSignupOpen: false,
-      Title:'Welcome to Campfire - select a story to get started',
-      story_ID:0,
+      Title:'',
+      story_ID:1,
       user_ID:0,
       stories: [],
       currStory: [],
@@ -51,7 +53,16 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getTitles();
+    //this.getTitles();
+    Axios.get('/campfire/stories')
+    .then((data) => {
+      this.setState({stories:data.data})
+    }).then(() => {
+      Axios.get('/campfire/messages', {params:{story_ID:this.state.stories[0].story_ID}})
+      .then(({data}) =>{
+        this.setState({currStory:data, Title:this.state.stories[0].Title})
+      })
+    })
     setInterval(() =>
     Axios.get('/campfire/messages', {params:{story_ID:this.state.story_ID}})
     .then(({data}) =>{
@@ -82,7 +93,8 @@ class App extends React.Component {
       alert('Your submission is too long, please shorten it.');
       return;
     } else {
-      document.getElementById('NewStoryText').value = '';
+      console.log('Handling Submit');
+      document.getElementById('addToStoryForm').value = '';
     }
 
     if (this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
@@ -194,8 +206,8 @@ class App extends React.Component {
             })
             .then((data) => {
               this.getTitles();
-              this.setState({Title:title})
-              this.setState({isNewStoryOpen:false})
+              this.setState({Title:title});
+              $('#NewStoryModal').modal('hide');
             })
           })
         })
@@ -244,36 +256,16 @@ class App extends React.Component {
       <div>
         <TopBar toggleLogout={this.toggleLogin.bind(this)} isLoggedIn={this.state.isLoggedIn} userName={this.state.username}
         logOut={this.toggleLogin.bind(this)}/>
-
-      <div className="container">
-        <div className="sidebar">
+        <div>
           <div>
-            {this.state.isLoggedIn ? <button onClick={() => this.startNewStory.call(this)}>Start New Story</button> : null}
-          </div>
-          <div>
-            <StoryList handleTitleClick={this.handleTitleClick.bind(this)} stories={this.state.stories} />
-          </div>
+          <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title} messages={this.state.currStory} charsLeft={this.state.chars_left} handleInputFieldChange={this.handleInputFieldChange.bind(this)} handleSubmitClick={this.handleSubmitClick.bind(this)} userName={this.state.username} isLoggedIn={this.state.isLoggedIn}/>
         </div>
-
-        <Modal show={this.state.isNewStoryOpen} handleNewSubmission={this.handleNewSubmission.bind(this)}
-          onClose={this.toggleNewStoryModal.bind(this)} />
-
-        <div className='messageBox'>
-          <div>
-            {title}
-            <MessageList state={this.state} handleEdit={this.handleEdit.bind(this)} displayEditWindow={this.displayEditWindow.bind(this)} messages={this.state.currStory} username={this.state.username}/>
-          </div>
-          <div>
-            <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
-              {this.state.isLoggedIn && this.state.story_ID !== 0 ? <InputField chars_left={this.state.chars_left} handleChange={this.handleInputFieldChange.bind(this)} /> : null}
-              {this.state.isLoggedIn && this.state.story_ID !== 0 ? <button>Submit!</button> : null}
-            </form>
-          </div>
         </div>
-      </div>
       <NewLogInModal handleLogin={this.handleLogin.bind(this)}/>
       <NewSignUpModal handleSignUp={this.handleSignUp.bind(this)} />
+      <NewStoryModal handleNewSubmission={this.handleNewSubmission.bind(this)}/>
     </div>
+
     )
   }
 }
@@ -287,6 +279,12 @@ ReactDOM.render(<App />, document.getElementById('app'));
 
 /* EXTRANEOUS
 
+
+<footer id="Main-Footer" className="bg-danger">
+  <div className="row">
+    <div className="col text-center text-white">
+  <h3> </h3>
+
 {!this.state.isLoggedIn ?
 <div className="loginSignup">
   <Login showLogin={this.state.isLoginOpen} handleLogin={this.handleLogin.bind(this)}
@@ -299,5 +297,34 @@ ReactDOM.render(<App />, document.getElementById('app'));
   :  <div className="logout"> <h3 className="welcomeMsg"> Welcome, {this.state.username}!</h3>
     <button className="loginBtn" onClick={() => this.toggleLogin.call(this)}>Log Out</button>
   </div>}
+
+
+        <div className="container">
+          <div className="sidebar">
+            <div>
+              {this.state.isLoggedIn ? <button onClick={() => this.startNewStory.call(this)}>Start New Story</button> : null}
+            </div>
+            <div>
+              <StoryList handleTitleClick={this.handleTitleClick.bind(this)} stories={this.state.stories} />
+            </div>
+          </div>
+
+          <Modal show={this.state.isNewStoryOpen} handleNewSubmission={this.handleNewSubmission.bind(this)}
+            onClose={this.toggleNewStoryModal.bind(this)} />
+
+          <div className='messageBox'>
+            <div>
+              {title}
+              <MessageList state={this.state} handleEdit={this.handleEdit.bind(this)} displayEditWindow={this.displayEditWindow.bind(this)} messages={this.state.currStory} username={this.state.username}/>
+            </div>
+            <div>
+              <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
+                {this.state.isLoggedIn && this.state.story_ID !== 0 ? <InputField chars_left={this.state.chars_left} handleChange={this.handleInputFieldChange.bind(this)} /> : null}
+                {this.state.isLoggedIn && this.state.story_ID !== 0 ? <button>Submit!</button> : null}
+              </form>
+            </div>
+          </div>
+        </div>
+
 
   */
