@@ -27,14 +27,14 @@ const NewStories = (props) => (
   <div>
     <div className="input-group mb-3">
       <div className="input-group-prepend">
-        <label className="input-group-text" htmlFor="inputGroupSelect01">Sort by</label>
+        <label className="input-group-text" htmlFor="inputGroupSelect01">Sort by:</label>
       </div>
       <select className="custom-select" id="inputGroupSelect01" value={props.sortBy} onChange={props.handleSortSelect}>
         <option value="Oldest">Oldest</option>
         <option value="Newest">Newest</option>
       </select>
       <div className="input-group-prepend">
-        <button className="btn" type="button"><i className="fas fa-sync"></i></button>
+        <button className="btn" type="button" onClick={() => props.getTitles()}><i className="fas fa-sync"></i></button>
       </div>
     </div>
   </div>

@@ -35,38 +35,19 @@ class App extends React.Component {
       editing: false,
       editingId: 0,
       chars_left: 250,
-      sortBy: 'Oldest'
+      sortBy: 'Newest'
     }
-  }
-
-  handleSortSelect(e) {
-    this.setState({sortBy: e.target.value});
-  }
-
-  handleEdit(text, id,story_ID){
-    if (text.length === 0){
-      alert('Cannot submit empty field');
-    }
-    else {
-    Axios.post('/campfire/updateMessage',{message:text,id:id})
-    .then((data)=>{
-      console.log('sending');
-      Axios.get('/campfire/messages', {params:{story_ID:story_ID}})
-      .then(({data}) =>{
-        this.setState({currStory:data,editing:false})
-      })
-    })}
   }
 
   componentDidMount() {
     //this.getTitles();
-    Axios.get('/campfire/stories')
+    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy}})
     .then((data) => {
       this.setState({stories:data.data})
     }).then(() => {
       Axios.get('/campfire/messages', {params:{story_ID:this.state.stories[0].story_ID}})
       .then(({data}) =>{
-        this.setState({currStory:data, Title:this.state.stories[0].Title})
+        this.setState({currStory:data, Title:this.state.stories[0].Title, story_ID:this.state.stories[0].story_ID})
       })
     })
     setInterval(() =>
@@ -78,7 +59,7 @@ class App extends React.Component {
   }
 
   getTitles() {
-    Axios.get('/campfire/stories')
+    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy}})
     .then((data) => {
       this.setState({stories:data.data})
     })
@@ -103,7 +84,7 @@ class App extends React.Component {
       document.getElementById('addToStoryForm').value = '';
     }
 
-    if (this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
+    if (this.state.currStory.length > 0 && this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
       alert('Can\'t post twice in a row, wait for another user or check out another story');
       return;
     }
@@ -197,7 +178,7 @@ class App extends React.Component {
       console.log('ready to make new story');
       Axios.post('/campfire/stories',{Title: title})
       .then((data) => {
-        Axios.get('/campfire/newStory',{params:{story_ID:this.state.story_ID}})
+        Axios.get('/campfire/newStory')
         .then(({data}) =>{
 
           var newStory_ID = data[data.length -1].story_ID;
@@ -229,6 +210,25 @@ class App extends React.Component {
     });
   }
 
+  handleSortSelect(e) {
+    this.setState({sortBy: e.target.value});
+  }
+
+  handleEdit(text, id,story_ID){
+    if (text.length === 0){
+      alert('Cannot submit empty field');
+    }
+    else {
+    Axios.post('/campfire/updateMessage',{message:text,id:id})
+    .then((data)=>{
+      console.log('sending');
+      Axios.get('/campfire/messages', {params:{story_ID:story_ID}})
+      .then(({data}) =>{
+        this.setState({currStory:data,editing:false})
+      })
+    })}
+  }
+
   toggleLogin(){
     this.setState({isLoggedIn:!this.state.isLoggedIn, username: ''});
   }
@@ -253,6 +253,7 @@ class App extends React.Component {
     this.toggleSignupModal()
   }
 
+
   render() {
     var title = this.state.Title ? <h2>{this.state.Title}</h2> : <form className='newStoryForm'>
       <h3>Add a title and the first part of the story, then hit submit</h3>
@@ -264,7 +265,7 @@ class App extends React.Component {
         logOut={this.toggleLogin.bind(this)}/>
         <div>
           <div>
-          <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title}
+          <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title} getTitles={this.getTitles.bind(this)}
             messages={this.state.currStory} charsLeft={this.state.chars_left} handleInputFieldChange={this.handleInputFieldChange.bind(this)} sortBy={this.state.sortBy}
             handleSubmitClick={this.handleSubmitClick.bind(this)} userName={this.state.username} isLoggedIn={this.state.isLoggedIn} handleSortSelect={this.handleSortSelect.bind(this)} />
         </div>

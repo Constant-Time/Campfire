@@ -18,6 +18,10 @@ Stories.selectAll = (data) => {
   return db('stories').select('*')
 }
 
+Stories.selectAllNewest = (data) => {
+  return db('stories').select('*').orderBy('story_ID', 'desc')
+}
+
 // find story IDs
 Stories.selectStory_ID = (data) => {
   return db('stories').select('story_ID')

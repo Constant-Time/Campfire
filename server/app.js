@@ -57,15 +57,29 @@ app.get('/', (req, res) => {
 
 //get all titles
 app.get('/campfire/stories', (req, res) => {
-  Stories.selectAll().then((data) => {res.send(data)})
-  //res.send('hello');
+  let param = req.query.sortBy;
+  console.log(param);
+  if (param === 'Newest') {
+    Stories.selectAllNewest().then((data) => {res.send(data)})
+  } else {
+    Stories.selectAll().then((data) => {res.send(data)})
+  }
+});
+
+
+/*
+app.get('/campfire/storiesNewest', (req, res) => {
+  Stories.selectAllNewest().then((data) => {res.send(data)});
 })
+*/
 
 //get new story_ID
 app.get('/campfire/newStory', (req, res) => {
-  var param = req.query.story_ID; //is the title
-	Stories.selectStory_ID({story_ID:param})
-  .then((data) => {res.send(data)})
+  //var param = req.query.story_ID; //is the title
+	Stories.selectStory_ID()
+  .then((data) => {
+    console.log(data, 'data');
+    res.send(data)})
 		});
 
 app.get('/campfire/checkUserExists', (req, res) => {
