@@ -111,3 +111,10 @@ small {
   cursor: pointer;
   text-decoration: underline !important;
 }
+/*
+.addToFavoritesButton, .randomStoryButton {
+  background-color: white;
+  color: #F10032;
+  border: 1px solid  #F10032;
+}
+*/
