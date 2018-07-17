@@ -110,6 +110,12 @@ small {
 .newStoriesItem:hover {
   cursor: pointer;
   text-decoration: underline !important;
+  background-color: aliceblue;
+}
+.newStoriesItemSelected {
+  background-color: #F10032 !important;
+  color: white !important;
+
 }
 /*
 .addToFavoritesButton, .randomStoryButton {

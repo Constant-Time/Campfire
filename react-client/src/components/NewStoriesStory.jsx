@@ -1,7 +1,17 @@
 import React from 'react';
 
-const NewStoriesStory = (props) => (
-  <li className="list-group-item newStoriesItem" onClick={() => {props.handleTitleClick(props.story.story_ID, props.story.Title)}}>{props.story.Title}</li>
-)
-
+class NewStoriesStory extends React.Component {
+  render() {
+    return (
+      <div>
+      {(this.props.story.story_ID === this.props.currStoryID) &&
+        <li className="list-group-item newStoriesItem newStoriesItemSelected" onClick={() => {this.props.handleTitleClick(this.props.story.story_ID, this.props.story.Title)}}>{this.props.story.Title}</li>
+      }
+      {!(this.props.story.story_ID === this.props.currStoryID) &&
+        <li className="list-group-item newStoriesItem" onClick={() => {this.props.handleTitleClick(this.props.story.story_ID, this.props.story.Title)}}>{this.props.story.Title}</li>
+      }
+    </div>
+    )
+  }
+}
 export default NewStoriesStory;

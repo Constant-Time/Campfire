@@ -40,7 +40,7 @@ const NewStories = (props) => (
   </div>
         <div className="card card-body currentStoryBody">
         <ul className="list-group list-group-flush">
-          {props.stories.map((story, index) => <NewStoriesStory story={story} key={index} handleTitleClick={props.handleTitleClick}/>)}
+          {props.stories.map((story, index) => <NewStoriesStory story={story} key={index} handleTitleClick={props.handleTitleClick} currStoryID={props.currStoryID} />)}
         </ul>
       </div>
       </div>

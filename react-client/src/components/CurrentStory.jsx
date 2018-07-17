@@ -45,7 +45,12 @@ class CurrentStory extends React.Component {
           <div id='testMessage'>
             {this.props.messages.map((message, index) => <CurrentStoryMessage message={message} key={index} />)}
           </div>
+          {this.props.isLoggedIn &&
           <button className="btn btn-danger mx-2 my-2 addToFavoritesButton"><i className="fa fa-star"></i> Add to favorites</button>
+          }
+          {!this.props.isLoggedIn &&
+            <button className="btn btn-danger mx-2 my-2 addToFavoritesButton disabled"><i className="fa fa-star"></i> Add to favorites</button>
+          }
           <button className="btn btn-danger my-2 randomStoryButton"><i className="fas fa-random"></i> Random Story</button>
           <br></br>
           {this.props.isLoggedIn && loggedInActions}
