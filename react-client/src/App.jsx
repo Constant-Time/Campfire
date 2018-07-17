@@ -265,6 +265,14 @@ class App extends React.Component {
     this.toggleNewStoryModal()
   }
 
+  handleLogout () {
+    this.setState({isLoggedIn: false, username: "", user_ID: 0, sortBy:"Newest", favorites:[]});
+    Axios.get('/campfire/stories', {params:{sortBy:"Newest", favorites:'hello'}})
+    .then((data) => {
+      this.setState({stories:data.data})
+    })
+  }
+
   toggleLoginModal () {
     this.setState({isLoginOpen: !this.state.isLoginOpen});
   }
@@ -289,8 +297,7 @@ class App extends React.Component {
     </form>
     return (
       <div>
-        <TopBar toggleLogout={this.toggleLogin.bind(this)} isLoggedIn={this.state.isLoggedIn} userName={this.state.username}
-        logOut={this.toggleLogin.bind(this)}/>
+        <TopBar toggleLogout={this.handleLogout.bind(this)} isLoggedIn={this.state.isLoggedIn} userName={this.state.username}/>
         <div>
           <div>
           <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title} getTitles={this.getTitles.bind(this)}
