@@ -120,7 +120,12 @@ class App extends React.Component {
   }
 
   handleSignUp(username, password) {
-    console.log('signing up', username, password)
+    console.log('signing up', username, password);
+    if (username.length < 6){
+      alert('Username not long enough');
+    } else if (password.length < 6) {
+      alert('Password not long enough')
+    } else {
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
@@ -144,6 +149,7 @@ class App extends React.Component {
     .catch((err) => {
       console.error(err);
     })
+    }
   }
 
   handleLogin(username, password) {

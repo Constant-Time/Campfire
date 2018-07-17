@@ -11,11 +11,11 @@ const NewSignUpModal = (props) => (
           <div className="modal-body">
             <div className="form-group">
               <label htmlFor="username">Username</label>
-              <input id="sign-up-username"type="text" placeholder="Username" className="form-control"/>
+              <input id="sign-up-username"type="text" placeholder="Username (6+ charcters)" className="form-control"/>
             </div>
             <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input id="sign-up-password"type="password" placeholder="Password" className="form-control"/>
+                <input id="sign-up-password"type="password" placeholder="Password (6+ characters)" className="form-control"/>
             </div>
           </div>
           <div className="modal-footer">
