@@ -16,6 +16,7 @@ import NewStoryModal from './components/NewStoryModal.jsx';
 //import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+//campfire/stories
 
 class App extends React.Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class App extends React.Component {
 
   componentDidMount() {
     //this.getTitles();
-    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy}})
+    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:'hello'}})
     .then((data) => {
       this.setState({stories:data.data})
     })
@@ -60,7 +61,8 @@ class App extends React.Component {
   }
 
   getTitles() {
-    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy}})
+    console.log(this.state.favorites, 'favorites in getTitles');
+    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:this.state.favorites}})
     .then((data) => {
       this.setState({stories:data.data})
     })

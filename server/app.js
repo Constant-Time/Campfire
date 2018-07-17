@@ -71,21 +71,23 @@ app.get('/', (req, res) => {
 //get all titles
 app.get('/campfire/stories', (req, res) => {
   let param = req.query.sortBy;
-  console.log(param);
+  console.log(param, 'param');
+  let favorites = req.query.favorites;
+  console.log(favorites, 'favorites');
   if (param === 'Newest') {
     Stories.selectAllNewest().then((data) => {res.send(data)})
+  }
+  else if (param === 'My Favorites' && favorites) {
+    console.log('trying to get favorites', favorites);
+    let numFavorites = favorites.map(string => parseInt(string));
+    console.log('trying to get favorites', numFavorites);
+    Stories.selectFavorites({ids:numFavorites}).then((data) => {res.send(data)});
   } else {
     Stories.selectAll().then((data) => {res.send(data)})
   }
 });
 
 
-
-/*
-app.get('/campfire/storiesNewest', (req, res) => {
-  Stories.selectAllNewest().then((data) => {res.send(data)});
-})
-*/
 
 //get new story_ID
 app.get('/campfire/newStory', (req, res) => {

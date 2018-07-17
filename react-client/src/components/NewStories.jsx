@@ -32,6 +32,7 @@ const NewStories = (props) => (
       <select className="custom-select" id="inputGroupSelect01" value={props.sortBy} onChange={props.handleSortSelect}>
         <option value="Oldest">Oldest</option>
         <option value="Newest">Newest</option>
+        <option value="My Favorites">My Favorites</option>
       </select>
       <div className="input-group-prepend">
         <button className="btn" type="button" onClick={() => props.getTitles()}><i className="fas fa-sync"></i></button>
