@@ -19,6 +19,12 @@ exports.up = function(knex, Promise) {
            table.string('message', 255);
            table.integer('user_ID').references('user_ID');
            table.integer('story_ID').references('story_ID');
+       }),
+
+       knex.schema.createTable('favorites', function(table){
+         table.increments('id').primary();
+         table.integer('user_ID').references('user_ID');
+         table.integer('story_ID').references('story_ID');
        })
    ])
 };

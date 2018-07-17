@@ -117,6 +117,16 @@ small {
   color: white !important;
 
 }
+
+.favorited {
+  background-color: white !important;
+  color: #F10032 !important;
+  border: 0px !important;
+}
+
+.favorited:hover {
+  cursor: auto !important;
+}
 /*
 .addToFavoritesButton, .randomStoryButton {
   background-color: white;

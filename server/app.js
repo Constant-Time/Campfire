@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var User = require('../db/user.js');
 var Messages = require('../db/messages.js');
 var Stories = require('../db/stories.js');
+var Favorites = require('../db/favorites.js');
 
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
@@ -34,11 +35,23 @@ app.post('/campfire/messages', (req, res) => {
   res.send(req.body.message);
   // res.end();
 });
+
+app.post('/campfire/favorites', (req, res) => {
+  Favorites.addFavorites(req.body);
+  res.end();
+})
 //select messages
 app.get('/campfire/messages', (req, res) => {
-  var param = req.query.story_ID
+  var param = req.query.story_ID;
 	Messages.selectAllWithNames({story_ID:param}).then((data) => {res.send(data)})
-		});
+});
+
+//get favorites
+app.get('/campfire/favorites', (req, res) => {
+  var param = req.query.user_ID;
+  console.log('param in get favorites', param);
+  Favorites.selectAllWithID({user_ID:param}).then((data) => {res.send(data)})
+});
 
 
 app.post('/campfire/stories', (req, res) => {
@@ -67,6 +80,7 @@ app.get('/campfire/stories', (req, res) => {
 });
 
 
+
 /*
 app.get('/campfire/storiesNewest', (req, res) => {
   Stories.selectAllNewest().then((data) => {res.send(data)});
@@ -90,6 +104,7 @@ app.get('/campfire/checkUserExists', (req, res) => {
 
 app.get('/campfire/getUserID', (req, res) => {
   var param = req.query.username;
+  console.log(param, 'param');
   User.findUser(param)
   .then((data) => {res.send(data)});
   //res.end()
