@@ -8,6 +8,7 @@ const NewSignUpModal = (props) => (
             <h5 className="modal-title text-white" >Sign Up</h5>
             <button className="close" data-dismiss="modal">&times;</button>
           </div>
+          <form type="submit" onSubmit={(e) => {e.preventDefault(), props.handleSignUp(document.getElementById('sign-up-username').value, document.getElementById('sign-up-password').value) }}>
           <div className="modal-body">
             <div className="form-group">
               <label htmlFor="username">Username</label>
@@ -21,6 +22,7 @@ const NewSignUpModal = (props) => (
           <div className="modal-footer">
             <button className="btn btn-secondary" onClick={() => props.handleSignUp(document.getElementById('sign-up-username').value, document.getElementById('sign-up-password').value)}>Submit</button>
           </div>
+        </form>
         </div>
       </div>
     </div>
