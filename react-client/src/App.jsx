@@ -84,6 +84,9 @@ class App extends React.Component {
     Axios.get('/campfire/favorites', {params:{user_ID:user_ID}})
     .then(({data}) =>{
       console.log(data);
+      var favArray = data.map(item => item.story_ID);
+      console.log(favArray);
+      this.setState({favorites:favArray});
       //this.setState({currStory:data})
     })
   }
