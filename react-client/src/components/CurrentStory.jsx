@@ -33,6 +33,11 @@ class CurrentStory extends React.Component {
         </div>
       </div>
 
+    var favoritesButton =
+    !this.props.isLoggedIn ? <button className="btn btn-danger mx-2 my-2 addToFavoritesButton disabled"><i className="fa fa-star"></i> Add to favorites</button> :
+    this.props.favorites.indexOf(this.props.currStoryID) > -1 ? <button className="btn btn-danger mx-2 my-2 addToFavoritesBadge favorited"><i className="fa fa-star"></i> Favorited</button>:
+    <button className="btn btn-danger mx-2 my-2 addToFavoritesButton" onClick={() => this.props.handleNewFavorite(this.props.userID, this.props.currStoryID)}><i className="fa fa-star"></i> Add to favorites</button>
+
 
     return (
       <div className="py-4 px-4">
@@ -45,13 +50,10 @@ class CurrentStory extends React.Component {
           <div id='testMessage'>
             {this.props.messages.map((message, index) => <CurrentStoryMessage message={message} key={index} />)}
           </div>
-          {this.props.isLoggedIn &&
-          <button className="btn btn-danger mx-2 my-2 addToFavoritesButton"><i className="fa fa-star"></i> Add to favorites</button>
-          }
-          {!this.props.isLoggedIn &&
-            <button className="btn btn-danger mx-2 my-2 addToFavoritesButton disabled"><i className="fa fa-star"></i> Add to favorites</button>
-          }
+          {favoritesButton}
           <button className="btn btn-danger my-2 randomStoryButton" onClick={() => this.props.selectRandomStory()}><i className="fas fa-random"></i> Random Story</button>
+        
+
           <br></br>
           {this.props.isLoggedIn && loggedInActions}
           {!this.props.isLoggedIn && loggedOutActions}
@@ -62,3 +64,20 @@ class CurrentStory extends React.Component {
   }
 }
 export default CurrentStory;
+
+/*
+{this.props.isLoggedIn &&
+<button className="btn btn-danger mx-2 my-2 addToFavoritesButton" onClick={() => this.props.handleNewFavorite(this.props.userID, this.props.currStoryID)}><i className="fa fa-star"></i> Add to favorites</button>
+}
+{!this.props.isLoggedIn &&
+  <button className="btn btn-danger mx-2 my-2 addToFavoritesButton disabled"><i className="fa fa-star"></i> Add to favorites</button>
+}
+
+
+ {this.props.isLoggedIn &&
+          <button className="btn btn-danger mx-2 my-2 addToFavoritesButton"><i className="fa fa-star"></i> Add to favorites</button>
+          }
+          {!this.props.isLoggedIn &&
+            <button className="btn btn-danger mx-2 my-2 addToFavoritesButton disabled"><i className="fa fa-star"></i> Add to favorites</button>
+          }
+*/

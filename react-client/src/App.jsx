@@ -16,12 +16,12 @@ import NewStoryModal from './components/NewStoryModal.jsx';
 //import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+//campfire/stories
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      counter: 0,
       username: '',
       isLoggedIn: false,
       isNewStoryOpen: false,
@@ -35,16 +35,18 @@ class App extends React.Component {
       editing: false,
       editingId: 0,
       chars_left: 250,
-      sortBy: 'Newest'
+      sortBy: 'Newest',
+      favorites: []
     }
   }
 
   componentDidMount() {
     //this.getTitles();
-    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy}})
+    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:'hello'}})
     .then((data) => {
       this.setState({stories:data.data})
-    }).then(() => {
+    })
+    .then(() => {
       Axios.get('/campfire/messages', {params:{story_ID:this.state.stories[0].story_ID}})
       .then(({data}) =>{
         this.setState({currStory:data, Title:this.state.stories[0].Title, story_ID:this.state.stories[0].story_ID})
@@ -59,7 +61,8 @@ class App extends React.Component {
   }
 
   getTitles() {
-    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy}})
+    console.log(this.state.favorites, 'favorites in getTitles');
+    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:this.state.favorites}})
     .then((data) => {
       this.setState({stories:data.data})
     })
@@ -70,6 +73,24 @@ class App extends React.Component {
 
   displayEditWindow(id){
     this.setState({editing:true, editingId:id});
+  }
+
+  handleNewFavorite(user_ID, story_ID){
+    console.log('handlingNewFavorite', user_ID, story_ID);
+    this.setState({favorites:[...this.state.favorites, story_ID]});
+    Axios.post('/campfire/favorites',{user_ID:user_ID,story_ID:story_ID})
+  }
+
+  getFavorites(user_ID){
+    console.log(user_ID, 'user_ID');
+    Axios.get('/campfire/favorites', {params:{user_ID:user_ID}})
+    .then(({data}) =>{
+      console.log(data);
+      var favArray = data.map(item => item.story_ID);
+      console.log(favArray);
+      this.setState({favorites:favArray});
+      //this.setState({currStory:data})
+    })
   }
 
   handleSubmitClick (text) {
@@ -151,24 +172,23 @@ class App extends React.Component {
         alert('Username is already taken')
       } else {
         Axios.post('/campfire/users', {username:username, password:password})
-          .then(({data}) => {
-            this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
-            console.log("closing modal");
-            $('#NewSignUpModal').modal('hide');
+        .then(({data}) => {
+          this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
+          console.log("closing modal");
+          $('#NewSignUpModal').modal('hide');
+          Axios.get('campfire/getUserID', {params:{username: username}})
+          .then(({data}) =>{
+            console.log(data, "data signup 151");
+            this.setState({user_ID: data[0].user_ID});
           })
-          .then(Axios.get('campfire/getUserID', {params:{username: username}
         })
-        .then(({data}) =>{
-          this.setState({user_ID: data[0].user_ID});
-        })
-      )
       }
     })
     .catch((err) => {
       console.error(err);
     })
-    }
   }
+}
 
   handleLogin(username, password) {
     console.log('handling login');
@@ -184,7 +204,9 @@ class App extends React.Component {
         Axios.get('campfire/getUserID', {params:{username: username}
       })
       .then(({data}) =>{
+        console.log(data);
         this.setState({user_ID: data[0].user_ID});
+        this.getFavorites(data[0].user_ID);
         $('#NewLogInModal').modal('hide');
       })
       }
@@ -261,6 +283,14 @@ class App extends React.Component {
     this.toggleNewStoryModal()
   }
 
+  handleLogout () {
+    this.setState({isLoggedIn: false, username: "", user_ID: 0, sortBy:"Newest", favorites:[]});
+    Axios.get('/campfire/stories', {params:{sortBy:"Newest", favorites:'hello'}})
+    .then((data) => {
+      this.setState({stories:data.data})
+    })
+  }
+
   toggleLoginModal () {
     this.setState({isLoginOpen: !this.state.isLoginOpen});
   }
@@ -285,14 +315,14 @@ class App extends React.Component {
     </form>
     return (
       <div>
-        <TopBar toggleLogout={this.toggleLogin.bind(this)} isLoggedIn={this.state.isLoggedIn} userName={this.state.username}
-        logOut={this.toggleLogin.bind(this)}/>
+        <TopBar toggleLogout={this.handleLogout.bind(this)} isLoggedIn={this.state.isLoggedIn} userName={this.state.username}/>
         <div>
           <div>
           <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title} getTitles={this.getTitles.bind(this)}
             messages={this.state.currStory} charsLeft={this.state.chars_left} handleInputFieldChange={this.handleInputFieldChange.bind(this)} sortBy={this.state.sortBy}
             handleSubmitClick={this.handleSubmitClick.bind(this)} userName={this.state.username} isLoggedIn={this.state.isLoggedIn} handleSortSelect={this.handleSortSelect.bind(this)}
-            currStoryID={this.state.story_ID} selectRandomStory={this.selectRandomStory.bind(this)}/>
+            currStoryID={this.state.story_ID} selectRandomStory={this.selectRandomStory.bind(this)} handleNewFavorite={this.handleNewFavorite.bind(this)} userID={this.state.user_ID} favorites={this.state.favorites}/>
+
         </div>
         </div>
       <NewLogInModal handleLogin={this.handleLogin.bind(this)}/>
