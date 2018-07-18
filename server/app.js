@@ -118,3 +118,11 @@ app.post('/campfire/updateMessage', (req, res) => {
     res.sendStatus(200);
   })
 })
+
+
+app.get('/campfire/title', (req,res) =>{
+  console.log(req.query)
+  Stories.selectTitle(req.query).then(data =>{
+    res.send(data)
+  })
+})

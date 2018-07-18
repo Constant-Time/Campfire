@@ -36,4 +36,8 @@ Stories.selectStory_ID = (data) => {
   return db('stories').select('story_ID')
 }
 
+Stories.selectTitle = (data) => {
+  return db('stories').select('Title').where({story_ID: data.story_ID})
+}
+
 module.exports = Stories
