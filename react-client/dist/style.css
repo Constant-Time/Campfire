@@ -127,6 +127,10 @@ small {
 .favorited:hover {
   cursor: auto !important;
 }
+
+.overCharLimit {
+  color: red;
+}
 /*
 .addToFavoritesButton, .randomStoryButton {
   background-color: white;

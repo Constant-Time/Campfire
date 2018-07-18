@@ -6,7 +6,7 @@ const MainBody = (props) => (
 
   <div className="row" id="MainBody">
     <div className="col-md-8">
-      <CurrentStory title={props.title} messages={props.messages} charsLeft={props.charsLeft} handleChange={props.handleInputFieldChange} userID={props.userID} favorites={props.favorites}
+      <CurrentStory title={props.title} messages={props.messages} charsLeft={props.charsLeft} handleChange={props.handleInputFieldChange} userID={props.userID} favorites={props.favorites} overCharLimit={props.overCharLimit}
         handleSubmitClick={props.handleSubmitClick} userName={props.userName} isLoggedIn={props.isLoggedIn} handleNewFavorite={props.handleNewFavorite} currStoryID={props.currStoryID} selectRandomStory={props.selectRandomStory}/>
     </div>
     <div className="col-md-4">

@@ -36,7 +36,8 @@ class App extends React.Component {
       editingId: 0,
       chars_left: 250,
       sortBy: 'Newest',
-      favorites: []
+      favorites: [],
+      overCharLimit: false
     }
   }
 
@@ -102,7 +103,8 @@ class App extends React.Component {
       return;
     } else {
       console.log('Handling Submit');
-      document.getElementById('addToStoryForm').value = '';
+      //document.getElementById('addToStoryForm').value = '';
+      this.clearAddToStoryForm();
     }
 
     if (this.state.currStory.length > 0 && this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
@@ -130,6 +132,7 @@ class App extends React.Component {
     .then(({data}) =>{
       this.setState({currStory:data})
       this.setState({Title:Title})
+      this.clearAddToStoryForm();
     })
   .catch((err) => {
     console.error(err);
@@ -151,8 +154,11 @@ class App extends React.Component {
     Axios.get('/campfire/title', {params:{story_ID: random}})
     .then(({data})=>{
       this.setState({Title:data[0].Title});
+      //document.getElementById('addToStoryForm').value = '';
+      this.clearAddToStoryForm();
     })
   }
+
 
   toggleNewStoryModal () {
     this.setState({isNewStoryOpen: !this.state.isNewStoryOpen});
@@ -251,13 +257,21 @@ class App extends React.Component {
   handleInputFieldChange(event) {
     var max_chars = 250;
   	var input = event.target.value;
+    var overLimit = input.length > max_chars ? true : false;
+    //console.log(max_chars, input, overLimit, "max_chars, input, overLimit");
     this.setState({
-    	chars_left: max_chars - input.length
+    	chars_left: max_chars - input.length,
+      overCharLimit: overLimit
     });
   }
 
   handleSortSelect(e) {
     this.setState({sortBy: e.target.value});
+  }
+
+  clearAddToStoryForm(){
+    document.getElementById('addToStoryForm').value = '';
+    this.setState({chars_left: 250, overCharLimit: false});
   }
 
   handleEdit(text, id,story_ID){
@@ -320,7 +334,7 @@ class App extends React.Component {
           <div>
           <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title} getTitles={this.getTitles.bind(this)}
             messages={this.state.currStory} charsLeft={this.state.chars_left} handleInputFieldChange={this.handleInputFieldChange.bind(this)} sortBy={this.state.sortBy}
-            handleSubmitClick={this.handleSubmitClick.bind(this)} userName={this.state.username} isLoggedIn={this.state.isLoggedIn} handleSortSelect={this.handleSortSelect.bind(this)}
+            handleSubmitClick={this.handleSubmitClick.bind(this)} userName={this.state.username} isLoggedIn={this.state.isLoggedIn} handleSortSelect={this.handleSortSelect.bind(this)} overCharLimit={this.state.overCharLimit}
             currStoryID={this.state.story_ID} selectRandomStory={this.selectRandomStory.bind(this)} handleNewFavorite={this.handleNewFavorite.bind(this)} userID={this.state.user_ID} favorites={this.state.favorites}/>
 
         </div>
