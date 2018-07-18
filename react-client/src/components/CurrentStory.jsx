@@ -14,7 +14,11 @@ class CurrentStory extends React.Component {
           <textarea className="form-control" id="addToStoryForm" rows="3" onChange={this.props.handleChange}></textarea>
         </div>
       </form>
-      <p>Characters Left: {this.props.charsLeft}</p>
+      {this.props.overCharLimit &&
+        <div className="alert alert-warning mt-0" role="alert">
+          Over character limit! Please shorten to submit your message.
+        </div>}
+      <p className={this.props.overCharLimit ? "overCharLimit" : ""}>Characters Left: {this.props.charsLeft}</p>
       <div className="container">
         <div className="addToStoryButton">
           <button className="btn mt-0" onClick={() => this.props.handleSubmitClick(document.getElementById('addToStoryForm').value)}>Submit</button>
@@ -52,7 +56,7 @@ class CurrentStory extends React.Component {
           </div>
           {favoritesButton}
           <button className="btn btn-danger my-2 randomStoryButton" onClick={() => this.props.selectRandomStory()}><i className="fas fa-random"></i> Random Story</button>
-        
+
 
           <br></br>
           {this.props.isLoggedIn && loggedInActions}

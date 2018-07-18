@@ -20,7 +20,7 @@ const NewSignUpModal = (props) => (
             </div>
           </div>
           <div className="modal-footer">
-            <button className="btn btn-secondary" onClick={() => props.handleSignUp(document.getElementById('sign-up-username').value, document.getElementById('sign-up-password').value)}>Submit</button>
+            <button className="btn btn-secondary" onClick={(e) => {e.preventDefault(), props.handleSignUp(document.getElementById('sign-up-username').value, document.getElementById('sign-up-password').value)}}>Submit</button>
           </div>
         </form>
         </div>
