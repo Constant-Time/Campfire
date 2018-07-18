@@ -115,6 +115,24 @@ class App extends React.Component {
   });
   }
 
+  selectRandomStory() {
+    var random = Math.floor(Math.random() * (Math.floor(this.state.stories.length) - 1) + 1)
+    this.setState({story_ID:random});
+    //update currStory;
+    Axios.get('/campfire/messages', {params:{story_ID:random}
+  })
+    .then(({data}) =>{
+      this.setState({currStory:data})
+    })
+  .catch((err) => {
+    console.error(err);
+    })
+    Axios.get('/campfire/title', {params:{story_ID: random}})
+    .then(({data})=>{
+      this.setState({Title:data[0].Title});
+    })
+  }
+
   toggleNewStoryModal () {
     this.setState({isNewStoryOpen: !this.state.isNewStoryOpen});
   }
@@ -274,7 +292,7 @@ class App extends React.Component {
           <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title} getTitles={this.getTitles.bind(this)}
             messages={this.state.currStory} charsLeft={this.state.chars_left} handleInputFieldChange={this.handleInputFieldChange.bind(this)} sortBy={this.state.sortBy}
             handleSubmitClick={this.handleSubmitClick.bind(this)} userName={this.state.username} isLoggedIn={this.state.isLoggedIn} handleSortSelect={this.handleSortSelect.bind(this)}
-            currStoryID={this.state.story_ID}/>
+            currStoryID={this.state.story_ID} selectRandomStory={this.selectRandomStory.bind(this)}/>
         </div>
         </div>
       <NewLogInModal handleLogin={this.handleLogin.bind(this)}/>
