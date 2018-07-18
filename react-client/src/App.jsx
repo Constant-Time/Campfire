@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
+declare var $ : any;
 import StoryList from './components/StoryList.jsx';
 import MessageList from './components/messageList.jsx';
 import InputField from './components/inputField.jsx';
@@ -8,45 +8,50 @@ import Axios from 'axios';
 import Modal from './components/Modal.jsx';
 import Login from './components/login.jsx';
 import Signup from './components/signup.jsx';
+import TopBar from './components/TopBar.jsx';
+import MainBody from './components/MainBody.jsx';
+import NewLogInModal from './components/NewLogInModal.jsx';
+import NewSignUpModal from './components/NewSignUpModal.jsx';
+import NewStoryModal from './components/NewStoryModal.jsx';
+//import 'font-awesome/css/font-awesome.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+//campfire/stories
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      counter: 0,
       username: '',
       isLoggedIn: false,
       isNewStoryOpen: false,
       isLoginOpen: false,
       isSignupOpen: false,
-      Title:'Welcome to Campfire - select a story to get started',
-      story_ID:0,
+      Title:'',
+      story_ID:1,
       user_ID:0,
       stories: [],
       currStory: [],
       editing: false,
       editingId: 0,
-      chars_left: 250
+      chars_left: 250,
+      sortBy: 'Newest',
+      favorites: []
     }
-  }
-
-  handleEdit(text, id,story_ID){
-    if (text.length === 0){
-      alert('Cannot submit empty field');
-    }
-    else {
-    Axios.post('/campfire/updateMessage',{message:text,id:id})
-    .then((data)=>{
-      console.log('sending');
-      Axios.get('/campfire/messages', {params:{story_ID:story_ID}})
-      .then(({data}) =>{
-        this.setState({currStory:data,editing:false})
-      })
-    })}
   }
 
   componentDidMount() {
-    this.getTitles();
+    //this.getTitles();
+    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:'hello'}})
+    .then((data) => {
+      this.setState({stories:data.data})
+    })
+    .then(() => {
+      Axios.get('/campfire/messages', {params:{story_ID:this.state.stories[0].story_ID}})
+      .then(({data}) =>{
+        this.setState({currStory:data, Title:this.state.stories[0].Title, story_ID:this.state.stories[0].story_ID})
+      })
+    })
     setInterval(() =>
     Axios.get('/campfire/messages', {params:{story_ID:this.state.story_ID}})
     .then(({data}) =>{
@@ -56,7 +61,8 @@ class App extends React.Component {
   }
 
   getTitles() {
-    Axios.get('/campfire/stories')
+    console.log(this.state.favorites, 'favorites in getTitles');
+    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:this.state.favorites}})
     .then((data) => {
       this.setState({stories:data.data})
     })
@@ -69,6 +75,24 @@ class App extends React.Component {
     this.setState({editing:true, editingId:id});
   }
 
+  handleNewFavorite(user_ID, story_ID){
+    console.log('handlingNewFavorite', user_ID, story_ID);
+    this.setState({favorites:[...this.state.favorites, story_ID]});
+    Axios.post('/campfire/favorites',{user_ID:user_ID,story_ID:story_ID})
+  }
+
+  getFavorites(user_ID){
+    console.log(user_ID, 'user_ID');
+    Axios.get('/campfire/favorites', {params:{user_ID:user_ID}})
+    .then(({data}) =>{
+      console.log(data);
+      var favArray = data.map(item => item.story_ID);
+      console.log(favArray);
+      this.setState({favorites:favArray});
+      //this.setState({currStory:data})
+    })
+  }
+
   handleSubmitClick (text) {
     if (text.length === 0 ){
       alert('Cannot submit an empty field');
@@ -77,10 +101,11 @@ class App extends React.Component {
       alert('Your submission is too long, please shorten it.');
       return;
     } else {
-      document.getElementById('NewStoryText').value = '';
+      console.log('Handling Submit');
+      document.getElementById('addToStoryForm').value = '';
     }
 
-    if (this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
+    if (this.state.currStory.length > 0 && this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
       alert('Can\'t post twice in a row, wait for another user or check out another story');
       return;
     }
@@ -111,11 +136,35 @@ class App extends React.Component {
   });
   }
 
+  selectRandomStory() {
+    var random = Math.floor(Math.random() * (Math.floor(this.state.stories.length) - 1) + 1)
+    this.setState({story_ID:random});
+    //update currStory;
+    Axios.get('/campfire/messages', {params:{story_ID:random}
+  })
+    .then(({data}) =>{
+      this.setState({currStory:data})
+    })
+  .catch((err) => {
+    console.error(err);
+    })
+    Axios.get('/campfire/title', {params:{story_ID: random}})
+    .then(({data})=>{
+      this.setState({Title:data[0].Title});
+    })
+  }
+
   toggleNewStoryModal () {
     this.setState({isNewStoryOpen: !this.state.isNewStoryOpen});
   }
 
-  handleSignup(username, password) {
+  handleSignUp(username, password) {
+    console.log('signing up', username, password);
+    if (username.length < 6){
+      alert('Username not long enough');
+    } else if (password.length < 6) {
+      alert('Password not long enough')
+    } else {
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
@@ -123,23 +172,26 @@ class App extends React.Component {
         alert('Username is already taken')
       } else {
         Axios.post('/campfire/users', {username:username, password:password})
-          .then(({data}) => {
-            this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
+        .then(({data}) => {
+          this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
+          console.log("closing modal");
+          $('#NewSignUpModal').modal('hide');
+          Axios.get('campfire/getUserID', {params:{username: username}})
+          .then(({data}) =>{
+            console.log(data, "data signup 151");
+            this.setState({user_ID: data[0].user_ID});
           })
-          .then(Axios.get('campfire/getUserID', {params:{username: username}
         })
-        .then(({data}) =>{
-          this.setState({user_ID: data[0].user_ID});
-        })
-      )
       }
     })
     .catch((err) => {
       console.error(err);
     })
   }
+}
 
   handleLogin(username, password) {
+    console.log('handling login');
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
@@ -152,7 +204,10 @@ class App extends React.Component {
         Axios.get('campfire/getUserID', {params:{username: username}
       })
       .then(({data}) =>{
+        console.log(data);
         this.setState({user_ID: data[0].user_ID});
+        this.getFavorites(data[0].user_ID);
+        $('#NewLogInModal').modal('hide');
       })
       }
     })
@@ -169,7 +224,7 @@ class App extends React.Component {
       console.log('ready to make new story');
       Axios.post('/campfire/stories',{Title: title})
       .then((data) => {
-        Axios.get('/campfire/newStory',{params:{story_ID:this.state.story_ID}})
+        Axios.get('/campfire/newStory')
         .then(({data}) =>{
 
           var newStory_ID = data[data.length -1].story_ID;
@@ -184,8 +239,8 @@ class App extends React.Component {
             })
             .then((data) => {
               this.getTitles();
-              this.setState({Title:title})
-              this.setState({isNewStoryOpen:false})
+              this.setState({Title:title});
+              $('#NewStoryModal').modal('hide');
             })
           })
         })
@@ -201,12 +256,39 @@ class App extends React.Component {
     });
   }
 
+  handleSortSelect(e) {
+    this.setState({sortBy: e.target.value});
+  }
+
+  handleEdit(text, id,story_ID){
+    if (text.length === 0){
+      alert('Cannot submit empty field');
+    }
+    else {
+    Axios.post('/campfire/updateMessage',{message:text,id:id})
+    .then((data)=>{
+      console.log('sending');
+      Axios.get('/campfire/messages', {params:{story_ID:story_ID}})
+      .then(({data}) =>{
+        this.setState({currStory:data,editing:false})
+      })
+    })}
+  }
+
   toggleLogin(){
-    this.setState({isLoggedIn:!this.state.isLoggedIn});
+    this.setState({isLoggedIn:!this.state.isLoggedIn, username: ''});
   }
 
   startNewStory() {
     this.toggleNewStoryModal()
+  }
+
+  handleLogout () {
+    this.setState({isLoggedIn: false, username: "", user_ID: 0, sortBy:"Newest", favorites:[]});
+    Axios.get('/campfire/stories', {params:{sortBy:"Newest", favorites:'hello'}})
+    .then((data) => {
+      this.setState({stories:data.data})
+    })
   }
 
   toggleLoginModal () {
@@ -225,6 +307,7 @@ class App extends React.Component {
     this.toggleSignupModal()
   }
 
+
   render() {
     var title = this.state.Title ? <h2>{this.state.Title}</h2> : <form className='newStoryForm'>
       <h3>Add a title and the first part of the story, then hit submit</h3>
@@ -232,45 +315,21 @@ class App extends React.Component {
     </form>
     return (
       <div>
-        {!this.state.isLoggedIn ?
-        <div className="loginSignup">
-          <Login showLogin={this.state.isLoginOpen} handleLogin={this.handleLogin.bind(this)}
-          onClose={this.toggleLoginModal.bind(this)} />
-          <Signup showSignup={this.state.isSignupOpen} handleSignup={this.handleSignup.bind(this)}
-            onClose={this.toggleSignupModal.bind(this)} />
-            <button className="loginBtn" onClick={() => this.startLogin.call(this)}>Login</button>
-            <button className="signupBtn" onClick={() => this.startSignup.call(this)}>Signup</button>
-          </div>
-          :  <div className="logout"> <h3 className="welcomeMsg"> Welcome, {this.state.username}!</h3>
-            <button className="loginBtn" onClick={() => this.toggleLogin.call(this)}>Log Out</button>
-          </div>}
-      <div className="container">
-        <div className="sidebar">
+        <TopBar toggleLogout={this.handleLogout.bind(this)} isLoggedIn={this.state.isLoggedIn} userName={this.state.username}/>
+        <div>
           <div>
-            {this.state.isLoggedIn ? <button onClick={() => this.startNewStory.call(this)}>Start New Story</button> : null}
-          </div>
-          <div>
-            <StoryList handleTitleClick={this.handleTitleClick.bind(this)} stories={this.state.stories} />
-          </div>
-        </div>
+          <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title} getTitles={this.getTitles.bind(this)}
+            messages={this.state.currStory} charsLeft={this.state.chars_left} handleInputFieldChange={this.handleInputFieldChange.bind(this)} sortBy={this.state.sortBy}
+            handleSubmitClick={this.handleSubmitClick.bind(this)} userName={this.state.username} isLoggedIn={this.state.isLoggedIn} handleSortSelect={this.handleSortSelect.bind(this)}
+            currStoryID={this.state.story_ID} selectRandomStory={this.selectRandomStory.bind(this)} handleNewFavorite={this.handleNewFavorite.bind(this)} userID={this.state.user_ID} favorites={this.state.favorites}/>
 
-        <Modal show={this.state.isNewStoryOpen} handleNewSubmission={this.handleNewSubmission.bind(this)}
-          onClose={this.toggleNewStoryModal.bind(this)} />
-
-        <div className='messageBox'>
-          <div>
-            {title}
-            <MessageList state={this.state} handleEdit={this.handleEdit.bind(this)} displayEditWindow={this.displayEditWindow.bind(this)} messages={this.state.currStory} username={this.state.username}/>
-          </div>
-          <div>
-            <form onSubmit={(e) => {e.preventDefault(), this.handleSubmitClick(document.getElementById('NewStoryText').value)}}>
-              {this.state.isLoggedIn && this.state.story_ID !== 0 ? <InputField chars_left={this.state.chars_left} handleChange={this.handleInputFieldChange.bind(this)} /> : null}
-              {this.state.isLoggedIn && this.state.story_ID !== 0 ? <button>Submit!</button> : null}
-            </form>
-          </div>
         </div>
-      </div>
+        </div>
+      <NewLogInModal handleLogin={this.handleLogin.bind(this)}/>
+      <NewSignUpModal handleSignUp={this.handleSignUp.bind(this)} />
+      <NewStoryModal handleNewSubmission={this.handleNewSubmission.bind(this)}/>
     </div>
+
     )
   }
 }

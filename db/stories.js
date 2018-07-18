@@ -17,10 +17,27 @@ Stories.addStory = (data) => {
 Stories.selectAll = (data) => {
   return db('stories').select('*')
 }
+//Find all story data, sorted newest
+Stories.selectAllNewest = (data) => {
+  return db('stories').select('*').orderBy('story_ID', 'desc')
+}
+//Find all Favorited stories
+Stories.selectFavorites = (data) => {
+  return db('stories')
+    .whereIn('story_ID', data.ids)
+    .orderBy('story_ID', 'desc')
+    .catch(error => {
+      console.error(error)
+    })
+}
 
 // find story IDs
 Stories.selectStory_ID = (data) => {
   return db('stories').select('story_ID')
+}
+
+Stories.selectTitle = (data) => {
+  return db('stories').select('Title').where({story_ID: data.story_ID})
 }
 
 module.exports = Stories

@@ -1,93 +1,136 @@
-html {
-  font-family: sans-serif;
-  background-color: #F2E9AC;
+html body {
+  background-color: #31383E !important;
+  font-family: aria;
 }
 
-h1 {
-  text-align: center;
-  font-size: 75px;
-  margin: 0px;
+.currentStoryHeader {
 }
 
-h2 {
-  font-size: 30px;
-  text-decoration: underline;
-  text-align: center;
+#campfireBrand {
+    display: inline-block;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
 }
 
-img {
+#campfireBrand img {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+#welcomeMessage {
+  color: white;
+  border: none;
+  opacity: 1;
+}
+
+.mainHeaderButton {
+  border-width: 0 !important;
+  box-shadow: none !important;
+}
+
+.newStoryHeader {
+  background-color: #2D2B37 !important;
+  color: white !important;
+}
+
+
+#testMessage {
+  background-color: white;
+  padding: .5rem;
+  border-radius: 20px;
+  border: 1px solid black;
+}
+
+#TestingFont {
+  font-size: 1.0rem;
+  font-weight: 300;
+}
+
+.currentStoryBody, .newStoryBody {
+  max-height: 70vh !important;
+  overflow-y: scroll;
+}
+
+.currentStoryBody {
+  background-color: #a2a2a2;
+}
+
+small {
+  color: white;
+}
+
+.extra{
+  display: none
+}
+
+.lead:hover .extra {
   display: block;
-  margin: 0 auto;
-  width: 100px;
-  height: 100px;
+  text-align: right;
+  font-size: 0.8rem;
+}
+.lead {
+  font-size: 1.1rem;
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 5px;
+.storyMessage {
+
+  padding: 0.5rem;
+  border-bottom: 1px solid red;
 }
 
-.sidebar {
-  flex: .25;
-  text-align: center;
-  border: 1px solid;
-  height: 550px;
-  overflow: hidden;
-  overflow-y: scroll;
+#testMessage:hover {
+  color: black !important;
 }
 
-.messageBox {
-  flex: 1;
-  margin-left: 10px;
-  border: 1px solid;
-  padding: 5px;
-  height: 540px;
-  overflow: hidden;
-  overflow-y: scroll;
+.currentStoryBody label {
+  border: 1px solid white;
+  background-color: white;
+  border-radius: 4px;
+  color: black;
+  padding: 2px;
 }
 
-.message {
-  font-size: 20px;
-  margin: 5px;
+.addToStoryButton button, .loggedOutActions button {
+  color: #F10032;
+  background-color: white;
+  background-image: none;
+  border-color: #F10032;
 }
 
-.username {
-  font-size: 10px;
+.addToStoryButton button:hover, .loggedOutActions button:hover {
+  background-color: #F10032;
+  color: white;
+  border-color: white;
 }
 
-.inputField {
-  width: 80%;
-  height: 40px;
-  margin-right: 10px;
-}
-
-.newStoryForm {
-  text-align: center;
-}
-
-.storyName {
-  text-decoration: underline;
+.newStoriesItem:hover {
   cursor: pointer;
+  text-decoration: underline !important;
+  background-color: aliceblue;
+}
+.newStoriesItemSelected {
+  background-color: #F10032 !important;
+  color: white !important;
+
 }
 
-.loginSignup {
-  text-align: center;
+.favorited {
+  background-color: white !important;
+  color: #F10032 !important;
+  border: 0px !important;
 }
 
-.loginBtn {
-  font-size: 20px;
+.favorited:hover {
+  cursor: auto !important;
 }
-
-.signupBtn {
-  font-size: 20px;
+/*
+.addToFavoritesButton, .randomStoryButton {
+  background-color: white;
+  color: #F10032;
+  border: 1px solid  #F10032;
 }
-
-.welcomeMsg {
-  text-align: center;
-}
-
-.logout {
-  text-align: center;
-}
+*/
