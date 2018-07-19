@@ -55,7 +55,7 @@ class CurrentStory extends React.Component {
             {this.props.messages.map((message, index) => <CurrentStoryMessage message={message} key={index} />)}
           </div>
           {favoritesButton}
-          <button className="btn btn-danger my-2 randomStoryButton" onClick={() => this.props.selectRandomStory()}><i className="fas fa-random"></i> Random Story</button>
+          <button className="btn btn-danger my-2 mx-2 randomStoryButton" onClick={() => this.props.selectRandomStory()}><i className="fas fa-random"></i> Random Story</button>
 
 
           <br></br>
