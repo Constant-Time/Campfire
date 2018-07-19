@@ -2,7 +2,10 @@ require('dotenv').config();
 var db = require('../db/db.js');
 var express = require('express');
 var app = express();
-
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
+const myPlaintextPassword = 's0/\/\P4$$w0rD';
+const someOtherPlaintextPassword = 'not_bacon';
 var bodyParser = require('body-parser');
 
 // Models
@@ -22,8 +25,23 @@ app.use(function(req, res, next) {
 //
 //insert user
 app.post('/campfire/users', (req, res) => {
+  console.log('adding new user', req.body);
+  bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+  console.log('pass, err, hash', req.body.password, err, hash);
+  User.addUser({password: hash, username: req.body.username})
+  res.end();
+  });
+/*
+bcrypt.compare('person2', '$2b$10$jhf7.C0hAObomsaOszF6O.Ru6.14hHqnPqEHf7pA4DanUztoiVunO', function(err, res) {
+    console.log(res, '2');
+});
+bcrypt.compare('person3', '$2b$10$jhf7.C0hAObomsaOszF6O.Ru6.14hHqnPqEHf7pA4DanUztoiVunO', function(err, res) {
+    console.log(res, '3');
+});
+
 	User.addUser(req.body);
   res.end();
+  */
 });
 //select all users
 app.get('/campfire/users', (req, res) => {
@@ -101,15 +119,36 @@ app.get('/campfire/newStory', (req, res) => {
 app.get('/campfire/checkUserExists', (req, res) => {
   var user = req.query.username;
   User.findUser(user)
-  .then((data) => {res.send(data)})
+  .then((data) => {
+    console.log(data, 'data in checkuserExists serverside');
+    status = data.length > 0 ? "taken": "open";
+    res.send(status)})
+})
+
+app.get('/campfire/checkPassword', (req, response) => {
+  console.log('got to checkPassword serverside');
+  var user = req.query.username;
+  var submittedPassword = req.query.password;
+  User.findUser(user)
+  .then((data) => {
+    var pass = data[0].password;
+    var id = data[0].user_ID
+    console.log(user, submittedPassword, pass, id, 'all in server');
+    bcrypt.compare(submittedPassword, pass, function(err, res) {
+        console.log(err, res, 'err, res');
+        response.send({match: res, user_ID: id})
+    });
+
+  })
 })
 
 app.get('/campfire/getUserID', (req, res) => {
   var param = req.query.username;
   console.log(param, 'param');
   User.findUser(param)
-  .then((data) => {res.send(data)});
+  .then((data) => {console.log(data); res.send([{user_ID: data[0].user_ID}])});
   //res.end()
+  //user_ID: data[0].user_ID
 })
 
 

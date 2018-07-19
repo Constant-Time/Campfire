@@ -171,10 +171,12 @@ class App extends React.Component {
     } else if (password.length < 6) {
       alert('Password not long enough')
     } else {
+      /////////////////////////////////// Return if username taken
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
-      if(data.length !== 0){
+      console.log(data, "data on server");
+      if(data === "taken"){
         alert('Username is already taken')
       } else {
         Axios.post('/campfire/users', {username:username, password:password})
@@ -198,15 +200,39 @@ class App extends React.Component {
 
   handleLogin(username, password) {
     console.log('handling login');
+    /////////////////////////////
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
-      if(data.length === 0){
+      console.log(data);
+      if(data === "open"){
         alert('Username doesn\'t exist');
-      } else if(password !== data[0].password){
+      } else {
+        console.log('running else');
+        Axios.get('/campfire/checkPassword', {params:{username:username, password:password}
+      })
+        .then(({data}) => {
+          console.log(data);
+          if (data.match === false) {
+            alert('Incorrect password');
+          } else if (data.match === true) {
+            this.setState({isLoggedIn: true, username: username, isLoginOpen: false, user_ID: data.user_ID});
+            $('#NewLogInModal').modal('hide');
+            this.getFavorites(data.user_ID);
+          } else {
+            console.log('something wrong with checkPassword');
+          }
+        })
+      }
+    })
+  }
+
+      /*
+      if(password !== data[0].password){
         alert('Incorrect password');
       } else {
         this.setState({isLoggedIn: true, username: username, isLoginOpen: false});
+        //////////////////////// return userID
         Axios.get('campfire/getUserID', {params:{username: username}
       })
       .then(({data}) =>{
@@ -218,7 +244,7 @@ class App extends React.Component {
       }
     })
   }
-
+*/
 
   handleNewSubmission(title, text) {
     if (title.length === 0 || text.length === 0) {
