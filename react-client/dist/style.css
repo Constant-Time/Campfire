@@ -68,11 +68,11 @@ html body {
 .currentStoryBody, .moreStoriesBody {
   background-color: #a2a2a2;
 }
-
+/*
 small {
   color: white;
 }
-
+*/
 .extra{
   display: none
 }

@@ -40,7 +40,6 @@ class App extends React.Component {
       overCharLimit: false
     }
   }
-
   componentDidMount() {
     //this.getTitles();
     Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:'hello'}})
@@ -96,10 +95,10 @@ class App extends React.Component {
 
   handleSubmitClick (text) {
     if (text.length === 0 ){
-      alert('Cannot submit an empty field');
+('Cannot submit an empty field');
       return;
     } else if (text.length > 250){
-      alert('Your submission is too long, please shorten it.');
+('Your submission is too long, please shorten it.');
       return;
     } else {
       console.log('Handling Submit');
@@ -108,7 +107,7 @@ class App extends React.Component {
     }
 
     if (this.state.currStory.length > 0 && this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
-      alert('Can\'t post twice in a row, wait for another user or check out another story');
+('Can\'t post twice in a row, wait for another user or check out another story');
       return;
     }
 
@@ -167,9 +166,9 @@ class App extends React.Component {
   handleSignUp(username, password) {
     console.log('signing up', username, password);
     if (username.length < 6){
-      alert('Username not long enough');
+('Username not long enough');
     } else if (password.length < 6) {
-      alert('Password not long enough')
+('Password not long enough')
     } else {
       /////////////////////////////////// Return if username taken
     Axios.get('/campfire/checkUserExists', {params:{username: username}
@@ -177,7 +176,7 @@ class App extends React.Component {
     .then(({data}) => {
       console.log(data, "data on server");
       if(data === "taken"){
-        alert('Username is already taken')
+  ('Username is already taken')
       } else {
         Axios.post('/campfire/users', {username:username, password:password})
         .then(({data}) => {
@@ -206,7 +205,7 @@ class App extends React.Component {
     .then(({data}) => {
       console.log(data);
       if(data === "open"){
-        alert('Username doesn\'t exist');
+  ('Username doesn\'t exist');
       } else {
         console.log('running else');
         Axios.get('/campfire/checkPassword', {params:{username:username, password:password}
@@ -214,7 +213,7 @@ class App extends React.Component {
         .then(({data}) => {
           console.log(data);
           if (data.match === false) {
-            alert('Incorrect password');
+      ('Incorrect password');
           } else if (data.match === true) {
             this.setState({isLoggedIn: true, username: username, isLoginOpen: false, user_ID: data.user_ID});
             $('#NewLogInModal').modal('hide');
@@ -229,7 +228,7 @@ class App extends React.Component {
 
       /*
       if(password !== data[0].password){
-        alert('Incorrect password');
+  ('Incorrect password');
       } else {
         this.setState({isLoggedIn: true, username: username, isLoginOpen: false});
         //////////////////////// return userID
@@ -248,9 +247,9 @@ class App extends React.Component {
 
   handleNewSubmission(title, text) {
     if (title.length === 0 || text.length === 0) {
-      alert('You must submit a title and text');
+('You must submit a title and text');
     } else if (text.length > 250){
-      alert('Your submission is too long please shorten it.')
+('Your submission is too long please shorten it.')
     }
     else {
       console.log('ready to make new story');
@@ -302,7 +301,7 @@ class App extends React.Component {
 
   handleEdit(text, id,story_ID){
     if (text.length === 0){
-      alert('Cannot submit empty field');
+('Cannot submit empty field');
     }
     else {
     Axios.post('/campfire/updateMessage',{message:text,id:id})

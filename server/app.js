@@ -4,8 +4,6 @@ var express = require('express');
 var app = express();
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
-const myPlaintextPassword = 's0/\/\P4$$w0rD';
-const someOtherPlaintextPassword = 'not_bacon';
 var bodyParser = require('body-parser');
 
 // Models

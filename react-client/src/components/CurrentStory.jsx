@@ -3,6 +3,9 @@ import CurrentStoryMessage from './CurrentStoryMessage.jsx';
 
 class CurrentStory extends React.Component {
   render () {
+    var submitButton = this.props.overCharLimit ?
+    <button className="btn mt-0 disabled">Submit</button> :
+    <button className="btn mt-0" onClick={() => this.props.handleSubmitClick(document.getElementById('addToStoryForm').value)}>Submit</button>
     var loggedInActions = (this.props.messages.length !== 0 && this.props.userName === this.props.messages[this.props.messages.length -1].username) ?
     <div className="alert alert-warning" role="alert">
       Cannot post consecutively on the same story. Try adding to another story!
@@ -21,7 +24,7 @@ class CurrentStory extends React.Component {
       <p className={this.props.overCharLimit ? "overCharLimit" : ""}>Characters Left: {this.props.charsLeft}</p>
       <div className="container">
         <div className="addToStoryButton">
-          <button className="btn mt-0" onClick={() => this.props.handleSubmitClick(document.getElementById('addToStoryForm').value)}>Submit</button>
+          {submitButton}
         </div>
       </div>
     </div>
