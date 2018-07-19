@@ -1,9 +1,15 @@
 html body {
-  background-color: #31383E !important;
-  font-family: aria;
-}
-
-.currentStoryHeader {
+  background:
+    linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+    linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+    background-color: #131313;
+    background-size: 20px 20px;
+    overflow-x: hidden;
+    font-family: aria;
 }
 
 #campfireBrand {
@@ -37,7 +43,6 @@ html body {
   color: white !important;
 }
 
-
 #testMessage {
   background-color: white;
   padding: .5rem;
@@ -50,12 +55,17 @@ html body {
   font-weight: 300;
 }
 
-.currentStoryBody, .newStoryBody {
+.currentStoryBody {
   max-height: 70vh !important;
   overflow-y: scroll;
 }
 
-.currentStoryBody {
+.moreStoriesBody{
+  max-height: 60vh !important;
+  overflow-y: scroll;
+}
+
+.currentStoryBody, .moreStoriesBody {
   background-color: #a2a2a2;
 }
 
@@ -72,8 +82,8 @@ small {
   text-align: right;
   font-size: 0.8rem;
 }
-.lead {
-  font-size: 1.1rem;
+#testMessage .lead {
+  font-size: 16px;
 }
 
 .storyMessage {
@@ -127,6 +137,18 @@ small {
 .favorited:hover {
   cursor: auto !important;
 }
+
+.overCharLimit {
+  color: red;
+}
+/*
+@media (max-width: 575px){
+  #testMessage .lead {
+    font-size: 16px;
+  }
+
+}
+*/
 /*
 .addToFavoritesButton, .randomStoryButton {
   background-color: white;
