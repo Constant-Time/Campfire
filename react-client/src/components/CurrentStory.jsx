@@ -3,6 +3,9 @@ import CurrentStoryMessage from './CurrentStoryMessage.jsx';
 
 class CurrentStory extends React.Component {
   render () {
+    var submitButton = this.props.overCharLimit ?
+    <button className="btn mt-0 disabled">Submit</button> :
+    <button className="btn mt-0" onClick={() => this.props.handleSubmitClick(document.getElementById('addToStoryForm').value)}>Submit</button>
     var loggedInActions = (this.props.messages.length !== 0 && this.props.userName === this.props.messages[this.props.messages.length -1].username) ?
     <div className="alert alert-warning" role="alert">
       Cannot post consecutively on the same story. Try adding to another story!
@@ -14,10 +17,14 @@ class CurrentStory extends React.Component {
           <textarea className="form-control" id="addToStoryForm" rows="3" onChange={this.props.handleChange}></textarea>
         </div>
       </form>
-      <p>Characters Left: {this.props.charsLeft}</p>
+      {this.props.overCharLimit &&
+        <div className="alert alert-warning mt-0" role="alert">
+          Over character limit! Please shorten to submit your message.
+        </div>}
+      <p className={this.props.overCharLimit ? "overCharLimit" : ""}>Characters Left: {this.props.charsLeft}</p>
       <div className="container">
         <div className="addToStoryButton">
-          <button className="btn mt-0" onClick={() => this.props.handleSubmitClick(document.getElementById('addToStoryForm').value)}>Submit</button>
+          {submitButton}
         </div>
       </div>
     </div>
@@ -51,8 +58,8 @@ class CurrentStory extends React.Component {
             {this.props.messages.map((message, index) => <CurrentStoryMessage message={message} key={index} />)}
           </div>
           {favoritesButton}
-          <button className="btn btn-danger my-2 randomStoryButton" onClick={() => this.props.selectRandomStory()}><i className="fas fa-random"></i> Random Story</button>
-        
+          <button className="btn btn-danger my-2 mx-2 randomStoryButton" onClick={() => this.props.selectRandomStory()}><i className="fas fa-random"></i> Random Story</button>
+
 
           <br></br>
           {this.props.isLoggedIn && loggedInActions}

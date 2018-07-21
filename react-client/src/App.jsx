@@ -36,10 +36,10 @@ class App extends React.Component {
       editingId: 0,
       chars_left: 250,
       sortBy: 'Newest',
-      favorites: []
+      favorites: [],
+      overCharLimit: false
     }
   }
-
   componentDidMount() {
     //this.getTitles();
     Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:'hello'}})
@@ -95,18 +95,19 @@ class App extends React.Component {
 
   handleSubmitClick (text) {
     if (text.length === 0 ){
-      alert('Cannot submit an empty field');
+('Cannot submit an empty field');
       return;
     } else if (text.length > 250){
-      alert('Your submission is too long, please shorten it.');
+('Your submission is too long, please shorten it.');
       return;
     } else {
       console.log('Handling Submit');
-      document.getElementById('addToStoryForm').value = '';
+      //document.getElementById('addToStoryForm').value = '';
+      this.clearAddToStoryForm();
     }
 
     if (this.state.currStory.length > 0 && this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
-      alert('Can\'t post twice in a row, wait for another user or check out another story');
+('Can\'t post twice in a row, wait for another user or check out another story');
       return;
     }
 
@@ -130,6 +131,7 @@ class App extends React.Component {
     .then(({data}) =>{
       this.setState({currStory:data})
       this.setState({Title:Title})
+      this.clearAddToStoryForm();
     })
   .catch((err) => {
     console.error(err);
@@ -151,8 +153,11 @@ class App extends React.Component {
     Axios.get('/campfire/title', {params:{story_ID: random}})
     .then(({data})=>{
       this.setState({Title:data[0].Title});
+      //document.getElementById('addToStoryForm').value = '';
+      this.clearAddToStoryForm();
     })
   }
+
 
   toggleNewStoryModal () {
     this.setState({isNewStoryOpen: !this.state.isNewStoryOpen});
@@ -161,15 +166,17 @@ class App extends React.Component {
   handleSignUp(username, password) {
     console.log('signing up', username, password);
     if (username.length < 6){
-      alert('Username not long enough');
+('Username not long enough');
     } else if (password.length < 6) {
-      alert('Password not long enough')
+('Password not long enough')
     } else {
+      /////////////////////////////////// Return if username taken
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
-      if(data.length !== 0){
-        alert('Username is already taken')
+      console.log(data, "data on server");
+      if(data === "taken"){
+  ('Username is already taken')
       } else {
         Axios.post('/campfire/users', {username:username, password:password})
         .then(({data}) => {
@@ -192,15 +199,39 @@ class App extends React.Component {
 
   handleLogin(username, password) {
     console.log('handling login');
+    /////////////////////////////
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
-      if(data.length === 0){
-        alert('Username doesn\'t exist');
-      } else if(password !== data[0].password){
-        alert('Incorrect password');
+      console.log(data);
+      if(data === "open"){
+  ('Username doesn\'t exist');
+      } else {
+        console.log('running else');
+        Axios.get('/campfire/checkPassword', {params:{username:username, password:password}
+      })
+        .then(({data}) => {
+          console.log(data);
+          if (data.match === false) {
+      ('Incorrect password');
+          } else if (data.match === true) {
+            this.setState({isLoggedIn: true, username: username, isLoginOpen: false, user_ID: data.user_ID});
+            $('#NewLogInModal').modal('hide');
+            this.getFavorites(data.user_ID);
+          } else {
+            console.log('something wrong with checkPassword');
+          }
+        })
+      }
+    })
+  }
+
+      /*
+      if(password !== data[0].password){
+  ('Incorrect password');
       } else {
         this.setState({isLoggedIn: true, username: username, isLoginOpen: false});
+        //////////////////////// return userID
         Axios.get('campfire/getUserID', {params:{username: username}
       })
       .then(({data}) =>{
@@ -212,13 +243,13 @@ class App extends React.Component {
       }
     })
   }
-
+*/
 
   handleNewSubmission(title, text) {
     if (title.length === 0 || text.length === 0) {
-      alert('You must submit a title and text');
+('You must submit a title and text');
     } else if (text.length > 250){
-      alert('Your submission is too long please shorten it.')
+('Your submission is too long please shorten it.')
     }
     else {
       console.log('ready to make new story');
@@ -251,8 +282,11 @@ class App extends React.Component {
   handleInputFieldChange(event) {
     var max_chars = 250;
   	var input = event.target.value;
+    var overLimit = input.length > max_chars ? true : false;
+    //console.log(max_chars, input, overLimit, "max_chars, input, overLimit");
     this.setState({
-    	chars_left: max_chars - input.length
+    	chars_left: max_chars - input.length,
+      overCharLimit: overLimit
     });
   }
 
@@ -260,9 +294,14 @@ class App extends React.Component {
     this.setState({sortBy: e.target.value});
   }
 
+  clearAddToStoryForm(){
+    document.getElementById('addToStoryForm').value = '';
+    this.setState({chars_left: 250, overCharLimit: false});
+  }
+
   handleEdit(text, id,story_ID){
     if (text.length === 0){
-      alert('Cannot submit empty field');
+('Cannot submit empty field');
     }
     else {
     Axios.post('/campfire/updateMessage',{message:text,id:id})
@@ -320,7 +359,7 @@ class App extends React.Component {
           <div>
           <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title} getTitles={this.getTitles.bind(this)}
             messages={this.state.currStory} charsLeft={this.state.chars_left} handleInputFieldChange={this.handleInputFieldChange.bind(this)} sortBy={this.state.sortBy}
-            handleSubmitClick={this.handleSubmitClick.bind(this)} userName={this.state.username} isLoggedIn={this.state.isLoggedIn} handleSortSelect={this.handleSortSelect.bind(this)}
+            handleSubmitClick={this.handleSubmitClick.bind(this)} userName={this.state.username} isLoggedIn={this.state.isLoggedIn} handleSortSelect={this.handleSortSelect.bind(this)} overCharLimit={this.state.overCharLimit}
             currStoryID={this.state.story_ID} selectRandomStory={this.selectRandomStory.bind(this)} handleNewFavorite={this.handleNewFavorite.bind(this)} userID={this.state.user_ID} favorites={this.state.favorites}/>
 
         </div>

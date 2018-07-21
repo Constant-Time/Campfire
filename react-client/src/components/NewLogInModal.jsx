@@ -20,7 +20,7 @@ const NewLogInModal = (props) => (
               </div>
           </div>
           <div className="modal-footer">
-            <button onClick={() => props.handleLogin(document.getElementById('login-username').value, document.getElementById('login-password').value)} className="btn btn-secondary">Log in</button>
+            <button onClick={(e) => {e.preventDefault(), props.handleLogin(document.getElementById('login-username').value, document.getElementById('login-password').value)}} className="btn btn-secondary">Log in</button>
           </div>
         </form>
         </div>
