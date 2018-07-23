@@ -139,10 +139,13 @@ class App extends React.Component {
   }
 
   selectRandomStory() {
-    var random = Math.floor(Math.random() * (Math.floor(this.state.stories.length) - 1) + 1)
-    this.setState({story_ID:random});
+    var copy = this.state.stories.slice();
+    var copyWithoutCurrent = copy.filter(story => story.story_ID !== this.state.story_ID);
+    var random = Math.floor(Math.random() * copyWithoutCurrent.length)
+    var newStoryID = copyWithoutCurrent[random].story_ID;
+    this.setState({story_ID:newStoryID});
     //update currStory;
-    Axios.get('/campfire/messages', {params:{story_ID:random}
+    Axios.get('/campfire/messages', {params:{story_ID:newStoryID}
   })
     .then(({data}) =>{
       this.setState({currStory:data})
@@ -150,10 +153,9 @@ class App extends React.Component {
   .catch((err) => {
     console.error(err);
     })
-    Axios.get('/campfire/title', {params:{story_ID: random}})
+    Axios.get('/campfire/title', {params:{story_ID: newStoryID}})
     .then(({data})=>{
       this.setState({Title:data[0].Title});
-      //document.getElementById('addToStoryForm').value = '';
       this.clearAddToStoryForm();
     })
   }
