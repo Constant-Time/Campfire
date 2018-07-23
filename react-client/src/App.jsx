@@ -37,7 +37,8 @@ class App extends React.Component {
       chars_left: 250,
       sortBy: 'Newest',
       favorites: [],
-      overCharLimit: false
+      overCharLimit: false,
+      noFavoritesFound: false
     }
   }
   componentDidMount() {
@@ -65,6 +66,11 @@ class App extends React.Component {
     Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:this.state.favorites}})
     .then((data) => {
       this.setState({stories:data.data})
+      if (this.state.favorites.length < 1 && this.state.sortBy === "My Favorites") {
+        this.setState({noFavoritesFound: true});
+      } else {
+        this.setState({noFavoritesFound: false});
+      }
     })
     .catch((err) => {
       console.error(err)
@@ -77,7 +83,7 @@ class App extends React.Component {
 
   handleNewFavorite(user_ID, story_ID){
     console.log('handlingNewFavorite', user_ID, story_ID);
-    this.setState({favorites:[...this.state.favorites, story_ID]});
+    this.setState({favorites:[...this.state.favorites, story_ID], noFavoritesFound: false});
     Axios.post('/campfire/favorites',{user_ID:user_ID,story_ID:story_ID})
   }
 
@@ -217,7 +223,7 @@ class App extends React.Component {
           if (data.match === false) {
       ('Incorrect password');
           } else if (data.match === true) {
-            this.setState({isLoggedIn: true, username: username, isLoginOpen: false, user_ID: data.user_ID});
+            this.setState({isLoggedIn: true, username: username, isLoginOpen: false, user_ID: data.user_ID, noFavoritesFound:false});
             $('#NewLogInModal').modal('hide');
             this.getFavorites(data.user_ID);
           } else {
@@ -331,7 +337,7 @@ class App extends React.Component {
     this.setState({isLoggedIn: false, username: "", user_ID: 0, sortBy:"Newest", favorites:[]});
     Axios.get('/campfire/stories', {params:{sortBy:"Newest", favorites:'hello'}})
     .then((data) => {
-      this.setState({stories:data.data})
+      this.setState({stories:data.data, noFavoritesFound: false});
     })
   }
 
@@ -363,7 +369,7 @@ class App extends React.Component {
         <div>
           <div>
           <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title} getTitles={this.getTitles.bind(this)}
-            messages={this.state.currStory} charsLeft={this.state.chars_left} handleInputFieldChange={this.handleInputFieldChange.bind(this)} sortBy={this.state.sortBy}
+            messages={this.state.currStory} charsLeft={this.state.chars_left} handleInputFieldChange={this.handleInputFieldChange.bind(this)} sortBy={this.state.sortBy} noFavoritesFound={this.state.noFavoritesFound}
             handleSubmitClick={this.handleSubmitClick.bind(this)} userName={this.state.username} isLoggedIn={this.state.isLoggedIn} handleSortSelect={this.handleSortSelect.bind(this)} overCharLimit={this.state.overCharLimit}
             currStoryID={this.state.story_ID} selectRandomStory={this.selectRandomStory.bind(this)} handleNewFavorite={this.handleNewFavorite.bind(this)} userID={this.state.user_ID} favorites={this.state.favorites}/>
 

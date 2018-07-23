@@ -23,24 +23,33 @@ const NewStories = (props) => (
       </div>
     </div>
   </div>
-  {props.isLoggedIn ? <button className="btn-outline-danger m-2" data-toggle="modal" data-target="#NewStoryModal">Add New Story</button> :
+  {props.isLoggedIn ?
   <div className="text-center">
-
-
-
-<button className="btn btn-outline-danger m-2" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-Add New Story
-</button>
-<div className="collapse" id="collapseExample">
+    <button className=" btn btn-outline-danger m-2" data-toggle="modal" data-target="#NewStoryModal">Add New Story</button>
+    {props.noFavoritesFound &&
+    <div className="alert alert-danger" role="alert">
+      No favorites found!
+    </div>}
+  </div> :
+  <div className="text-center">
+    <button className="btn btn-outline-danger m-2" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Add New Story
+    </button>
+    <div className="collapse" id="collapseExample">
+    <div className="alert alert-danger" role="alert">
+    Must be logged in to add a new story.
+    </div>
+  </div>
+{props.noFavoritesFound &&
 <div className="alert alert-danger" role="alert">
-Must be logged in to add a new story.
-</div>
-</div>
+  No favorites found!
+</div>}
 
 
 
   </div>}
         <div className="card card-body moreStoriesBody">
+
         <ul className="list-group list-group-flush">
           {props.stories.map((story, index) => <NewStoriesStory story={story} key={index} handleTitleClick={props.handleTitleClick} currStoryID={props.currStoryID} />)}
         </ul>

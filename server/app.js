@@ -29,17 +29,6 @@ app.post('/campfire/users', (req, res) => {
   User.addUser({password: hash, username: req.body.username})
   res.end();
   });
-/*
-bcrypt.compare('person2', '$2b$10$jhf7.C0hAObomsaOszF6O.Ru6.14hHqnPqEHf7pA4DanUztoiVunO', function(err, res) {
-    console.log(res, '2');
-});
-bcrypt.compare('person3', '$2b$10$jhf7.C0hAObomsaOszF6O.Ru6.14hHqnPqEHf7pA4DanUztoiVunO', function(err, res) {
-    console.log(res, '3');
-});
-
-	User.addUser(req.body);
-  res.end();
-  */
 });
 //select all users
 app.get('/campfire/users', (req, res) => {
@@ -87,7 +76,7 @@ app.get('/', (req, res) => {
 //get all titles
 app.get('/campfire/stories', (req, res) => {
   let param = req.query.sortBy;
-  console.log(param, 'param');
+  console.log(param, 'param', req.query, 'req.query');
   let favorites = req.query.favorites;
   console.log(favorites, 'favorites');
   if (param === 'Newest') {
