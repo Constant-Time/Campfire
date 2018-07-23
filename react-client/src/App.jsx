@@ -56,11 +56,12 @@ class App extends React.Component {
     }), 5000);
   }
 
-  getTitles() {
-    Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:this.state.favorites}})
+  getTitles(newSortBy) {
+    var sortBy = newSortBy || this.state.sortBy;
+    Axios.get('/campfire/stories', {params:{sortBy:sortBy, favorites:this.state.favorites}})
     .then((data) => {
       this.setState({stories:data.data})
-      if (this.state.favorites.length < 1 && this.state.sortBy === "My Favorites") {
+      if (this.state.favorites.length < 1 && sortBy === "My Favorites") {
         this.setState({noFavoritesFound: true});
       } else {
         this.setState({noFavoritesFound: false});
@@ -255,6 +256,7 @@ class App extends React.Component {
 
   handleSortSelect(e) {
     this.setState({sortBy: e.target.value});
+    this.getTitles(e.target.value);
   }
 
   clearAddToStoryForm(){
