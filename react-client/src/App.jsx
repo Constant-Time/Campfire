@@ -13,10 +13,7 @@ import MainBody from './components/MainBody.jsx';
 import NewLogInModal from './components/NewLogInModal.jsx';
 import NewSignUpModal from './components/NewSignUpModal.jsx';
 import NewStoryModal from './components/NewStoryModal.jsx';
-//import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-//campfire/stories
 
 class App extends React.Component {
   constructor(props) {
@@ -42,7 +39,6 @@ class App extends React.Component {
     }
   }
   componentDidMount() {
-    //this.getTitles();
     Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:'hello'}})
     .then((data) => {
       this.setState({stories:data.data})
@@ -58,11 +54,9 @@ class App extends React.Component {
     .then(({data}) =>{
       this.setState({currStory:data})
     }), 5000);
-    //this.setState({counter: (this.state.counter + 1)}), 20000);
   }
 
   getTitles() {
-    console.log(this.state.favorites, 'favorites in getTitles');
     Axios.get('/campfire/stories', {params:{sortBy:this.state.sortBy, favorites:this.state.favorites}})
     .then((data) => {
       this.setState({stories:data.data})
@@ -82,20 +76,15 @@ class App extends React.Component {
   }
 
   handleNewFavorite(user_ID, story_ID){
-    console.log('handlingNewFavorite', user_ID, story_ID);
     this.setState({favorites:[...this.state.favorites, story_ID], noFavoritesFound: false});
     Axios.post('/campfire/favorites',{user_ID:user_ID,story_ID:story_ID})
   }
 
   getFavorites(user_ID){
-    console.log(user_ID, 'user_ID');
     Axios.get('/campfire/favorites', {params:{user_ID:user_ID}})
     .then(({data}) =>{
-      console.log(data);
       var favArray = data.map(item => item.story_ID);
-      console.log(favArray);
       this.setState({favorites:favArray});
-      //this.setState({currStory:data})
     })
   }
 
@@ -107,8 +96,6 @@ class App extends React.Component {
 ('Your submission is too long, please shorten it.');
       return;
     } else {
-      console.log('Handling Submit');
-      //document.getElementById('addToStoryForm').value = '';
       this.clearAddToStoryForm();
     }
 
@@ -172,7 +159,6 @@ class App extends React.Component {
   }
 
   handleSignUp(username, password) {
-    console.log('signing up', username, password);
     if (username.length < 6){
 ('Username not long enough');
     } else if (password.length < 6) {
@@ -182,18 +168,15 @@ class App extends React.Component {
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
-      console.log(data, "data on server");
       if(data === "taken"){
   ('Username is already taken')
       } else {
         Axios.post('/campfire/users', {username:username, password:password})
         .then(({data}) => {
           this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
-          console.log("closing modal");
           $('#NewSignUpModal').modal('hide');
           Axios.get('campfire/getUserID', {params:{username: username}})
           .then(({data}) =>{
-            console.log(data, "data signup 151");
             this.setState({user_ID: data[0].user_ID});
           })
         })
@@ -206,52 +189,26 @@ class App extends React.Component {
 }
 
   handleLogin(username, password) {
-    console.log('handling login');
-    /////////////////////////////
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
-      console.log(data);
       if(data === "open"){
   ('Username doesn\'t exist');
       } else {
-        console.log('running else');
         Axios.get('/campfire/checkPassword', {params:{username:username, password:password}
       })
         .then(({data}) => {
-          console.log(data);
           if (data.match === false) {
       ('Incorrect password');
           } else if (data.match === true) {
             this.setState({isLoggedIn: true, username: username, isLoginOpen: false, user_ID: data.user_ID, noFavoritesFound:false});
             $('#NewLogInModal').modal('hide');
             this.getFavorites(data.user_ID);
-          } else {
-            console.log('something wrong with checkPassword');
           }
         })
       }
     })
   }
-
-      /*
-      if(password !== data[0].password){
-  ('Incorrect password');
-      } else {
-        this.setState({isLoggedIn: true, username: username, isLoginOpen: false});
-        //////////////////////// return userID
-        Axios.get('campfire/getUserID', {params:{username: username}
-      })
-      .then(({data}) =>{
-        console.log(data);
-        this.setState({user_ID: data[0].user_ID});
-        this.getFavorites(data[0].user_ID);
-        $('#NewLogInModal').modal('hide');
-      })
-      }
-    })
-  }
-*/
 
   handleNewSubmission(title, text) {
     if (title.length === 0 || text.length === 0) {
@@ -260,7 +217,6 @@ class App extends React.Component {
 ('Your submission is too long please shorten it.')
     }
     else {
-      console.log('ready to make new story');
       Axios.post('/campfire/stories',{Title: title})
       .then((data) => {
         Axios.get('/campfire/newStory')
@@ -291,7 +247,6 @@ class App extends React.Component {
     var max_chars = 250;
   	var input = event.target.value;
     var overLimit = input.length > max_chars ? true : false;
-    //console.log(max_chars, input, overLimit, "max_chars, input, overLimit");
     this.setState({
     	chars_left: max_chars - input.length,
       overCharLimit: overLimit
@@ -303,7 +258,6 @@ class App extends React.Component {
   }
 
   clearAddToStoryForm(){
-    //console.log(document.getElementById('addToStoryForm'));
     if (document.getElementById('addToStoryForm')) {
       document.getElementById('addToStoryForm').value = '';
       this.setState({chars_left: 250, overCharLimit: false});
@@ -317,7 +271,6 @@ class App extends React.Component {
     else {
     Axios.post('/campfire/updateMessage',{message:text,id:id})
     .then((data)=>{
-      console.log('sending');
       Axios.get('/campfire/messages', {params:{story_ID:story_ID}})
       .then(({data}) =>{
         this.setState({currStory:data,editing:false})
