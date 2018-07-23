@@ -91,17 +91,17 @@ class App extends React.Component {
 
   handleSubmitClick (text) {
     if (text.length === 0 ){
-('Cannot submit an empty field');
+      alert('Cannot submit an empty field');
       return;
     } else if (text.length > 250){
-('Your submission is too long, please shorten it.');
+      alert('Your submission is too long, please shorten it.');
       return;
     } else {
       this.clearAddToStoryForm();
     }
 
     if (this.state.currStory.length > 0 && this.state.currStory[this.state.currStory.length -1].username === this.state.username) {
-('Can\'t post twice in a row, wait for another user or check out another story');
+      alert('Can\'t post twice in a row, wait for another user or check out another story');
       return;
     }
 
@@ -161,16 +161,16 @@ class App extends React.Component {
 
   handleSignUp(username, password) {
     if (username.length < 6){
-('Username not long enough');
+      alert('Username not long enough');
     } else if (password.length < 6) {
-('Password not long enough')
+      alert('Password not long enough')
     } else {
       /////////////////////////////////// Return if username taken
     Axios.get('/campfire/checkUserExists', {params:{username: username}
   })
     .then(({data}) => {
       if(data === "taken"){
-  ('Username is already taken')
+        alert('Username is already taken')
       } else {
         Axios.post('/campfire/users', {username:username, password:password})
         .then(({data}) => {
@@ -194,13 +194,13 @@ class App extends React.Component {
   })
     .then(({data}) => {
       if(data === "open"){
-  ('Username doesn\'t exist');
+        alert('Username doesn\'t exist');
       } else {
         Axios.get('/campfire/checkPassword', {params:{username:username, password:password}
       })
         .then(({data}) => {
           if (data.match === false) {
-      ('Incorrect password');
+            alert('Password did not match');
           } else if (data.match === true) {
             this.setState({isLoggedIn: true, username: username, isLoginOpen: false, user_ID: data.user_ID, noFavoritesFound:false});
             $('#NewLogInModal').modal('hide');
@@ -213,9 +213,9 @@ class App extends React.Component {
 
   handleNewSubmission(title, text) {
     if (title.length === 0 || text.length === 0) {
-('You must submit a title and text');
+      alert('You must submit a title and text');
     } else if (text.length > 250){
-('Your submission is too long please shorten it.')
+      alert('Your submission is too long please shorten it.')
     }
     else {
       Axios.post('/campfire/stories',{Title: title})
