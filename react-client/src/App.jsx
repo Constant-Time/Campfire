@@ -295,8 +295,11 @@ class App extends React.Component {
   }
 
   clearAddToStoryForm(){
-    document.getElementById('addToStoryForm').value = '';
-    this.setState({chars_left: 250, overCharLimit: false});
+    //console.log(document.getElementById('addToStoryForm'));
+    if (document.getElementById('addToStoryForm')) {
+      document.getElementById('addToStoryForm').value = '';
+      this.setState({chars_left: 250, overCharLimit: false});
+    }
   }
 
   handleEdit(text, id,story_ID){
