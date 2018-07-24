@@ -160,6 +160,7 @@ class App extends React.Component {
   }
 
   handleSignUp(username, password) {
+    console.log(username, password);
     if (username.length < 6){
       alert('Username not long enough');
     } else if (password.length < 6) {
