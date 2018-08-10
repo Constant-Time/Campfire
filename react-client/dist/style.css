@@ -141,6 +141,12 @@ small {
 .overCharLimit {
   color: red;
 }
+
+.profilePic {
+  border-radius: 50%;
+  height:50px;
+  float:right;
+}
 /*
 @media (max-width: 575px){
   #testMessage .lead {
