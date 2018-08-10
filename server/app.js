@@ -24,7 +24,7 @@ app.use(function(req, res, next) {
 //insert user
 app.post('/campfire/users', (req, res) => {
   bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-  User.addUser({password: hash, username: req.body.username})
+  User.addUser({password: hash, username: req.body.username, email: req.body.email})
   res.end();
   });
 });
@@ -107,8 +107,9 @@ app.get('/campfire/checkPassword', (req, response) => {
   .then((data) => {
     var pass = data[0].password;
     var id = data[0].user_ID
+    var email = data[0].email
     bcrypt.compare(submittedPassword, pass, function(err, res) {
-        response.send({match: res, user_ID: id})
+        response.send({match: res, user_ID: id, email:email })
     });
 
   })

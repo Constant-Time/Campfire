@@ -9,7 +9,7 @@ class TopBar extends React.Component {
   <div>
   <a id="welcomeMessage" className="btn btn-outline-light py-2 mx-1 disabled">Welcome {this.props.userName}!</a>
   <button onClick={() => this.props.toggleLogout()} className="btn btn-outline-light py-0 mx-2 mainHeaderButton" type="button">Log Out</button>
-  <img className="profilePic" src={`https://www.gravatar.com/avatar/${md5('joshawesome12@yahoo.com')}`} alt='profilePic'/>
+  <img className="profilePic" src={`https://www.gravatar.com/avatar/${md5(this.props.email)}`} alt='profilePic'/>
   </div> :
   <div>
   <button data-toggle="modal" data-target="#NewLogInModal" className="btn btn-outline-light py-0 mr-2 mainHeaderButton" type="button">Login</button>

@@ -7,7 +7,8 @@ User.addUser = (data) => {
   db('users')
     .insert({
       username: data.username,
-      password: data.password
+      password: data.password,
+      email:data.email
     })
     .catch(err => {
       console.error(err)

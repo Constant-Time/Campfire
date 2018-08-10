@@ -20,6 +20,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       username: '',
+      email: '',
       isLoggedIn: false,
       isNewStoryOpen: false,
       isLoginOpen: false,
@@ -158,7 +159,7 @@ class App extends React.Component {
     this.setState({isNewStoryOpen: !this.state.isNewStoryOpen});
   }
 
-  handleSignUp(username, password) {
+  handleSignUp(username, password, email) {
     if (username.length < 6){
 ('Username not long enough');
     } else if (password.length < 6) {
@@ -171,7 +172,7 @@ class App extends React.Component {
       if(data === "taken"){
   ('Username is already taken')
       } else {
-        Axios.post('/campfire/users', {username:username, password:password})
+        Axios.post('/campfire/users', {username:username, password:password, email:email})
         .then(({data}) => {
           this.setState({isLoggedIn: true, username: username, isSignupOpen: false})
           $('#NewSignUpModal').modal('hide');
@@ -201,7 +202,7 @@ class App extends React.Component {
           if (data.match === false) {
       ('Incorrect password');
           } else if (data.match === true) {
-            this.setState({isLoggedIn: true, username: username, isLoginOpen: false, user_ID: data.user_ID, noFavoritesFound:false});
+            this.setState({isLoggedIn: true, username: username, email: data.email, isLoginOpen: false, user_ID: data.user_ID, noFavoritesFound:false});
             $('#NewLogInModal').modal('hide');
             this.getFavorites(data.user_ID);
           }
@@ -318,7 +319,7 @@ class App extends React.Component {
     </form>
     return (
       <div>
-        <TopBar toggleLogout={this.handleLogout.bind(this)} isLoggedIn={this.state.isLoggedIn} userName={this.state.username}/>
+        <TopBar toggleLogout={this.handleLogout.bind(this)} isLoggedIn={this.state.isLoggedIn} userName={this.state.username} email={this.state.email}/>
         <div>
           <div>
           <MainBody stories={this.state.stories} handleTitleClick={this.handleTitleClick.bind(this)} title={this.state.Title} getTitles={this.getTitles.bind(this)}

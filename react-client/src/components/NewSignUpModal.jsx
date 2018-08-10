@@ -8,8 +8,12 @@ const NewSignUpModal = (props) => (
             <h5 className="modal-title text-white" >Sign Up</h5>
             <button className="close" data-dismiss="modal">&times;</button>
           </div>
-          <form type="submit" onSubmit={(e) => {e.preventDefault(), props.handleSignUp(document.getElementById('sign-up-username').value, document.getElementById('sign-up-password').value) }}>
+          <form type="submit" onSubmit={(e) => {e.preventDefault(), props.handleSignUp(document.getElementById('sign-up-username').value, document.getElementById('sign-up-password').value, document.getElementById('sign-up-email').value) }}>
           <div className="modal-body">
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input id="sign-up-email"type="text" placeholder="Valid Email Address" className="form-control"/>
+            </div>
             <div className="form-group">
               <label htmlFor="username">Username</label>
               <input id="sign-up-username"type="text" placeholder="Username (6+ charcters)" className="form-control"/>
@@ -20,7 +24,7 @@ const NewSignUpModal = (props) => (
             </div>
           </div>
           <div className="modal-footer">
-            <button className="btn btn-secondary" onClick={(e) => {e.preventDefault(), props.handleSignUp(document.getElementById('sign-up-username').value, document.getElementById('sign-up-password').value)}}>Submit</button>
+            <button className="btn btn-secondary" onClick={(e) => {e.preventDefault(), props.handleSignUp(document.getElementById('sign-up-username').value, document.getElementById('sign-up-password').value, document.getElementById('sign-up-email').value)}}>Submit</button>
           </div>
         </form>
         </div>
